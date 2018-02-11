@@ -11,7 +11,7 @@ class ActiveEntity extends Entity
     private var sprite:Spritemap;
     private var velocity:Point;
 
-    public function new(x:Int, y:Int)
+    public function new(x:Float, y:Float)
     {
         super(x, y);
         velocity = new Point(0, 0);

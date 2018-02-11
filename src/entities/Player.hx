@@ -26,11 +26,13 @@ class Player extends ActiveEntity
     // Animation constants
     public static inline var LAND_SQUASH = 0.5;
     public static inline var SQUASH_RECOVERY = 0.05;
-    public static inline var HORIZONTAL_SQUASH_RECOVERY = 0.06;
+    public static inline var HORIZONTAL_SQUASH_RECOVERY = 0.08;
     public static inline var AIR_SQUASH_RECOVERY = 0.03;
     public static inline var JUMP_STRETCH = 1.5;
     public static inline var DOUBLE_JUMP_STRETCH = 1.4;
     public static inline var WALL_SQUASH = 0.5;
+    public static inline var WALL_JUMP_STRETCH_X = 1.4;
+    public static inline var WALL_JUMP_STRETCH_Y = 1.4;
 
     private var isTurning:Bool;
     private var canDoubleJump:Bool;
@@ -38,7 +40,7 @@ class Player extends ActiveEntity
     private var wasOnWall:Bool;
     private var lastWallWasRight:Bool;
 
-    public function new(x:Int, y:Int)
+    public function new(x:Float, y:Float)
     {
 	    super(x, y);
         sprite = new Spritemap("graphics/player.png", 8, 12);
@@ -71,6 +73,11 @@ class Player extends ActiveEntity
         // Scales sprite vertically upwards
         sprite.scaleY = newScaleY;
         sprite.originY = height - (height / sprite.scaleY);
+    }
+
+    private function makeDustAtFeet() {
+        var dust = new Dust(x, bottom - 4);
+        scene.add(dust);
     }
 
     public override function update()
@@ -128,6 +135,7 @@ class Player extends ActiveEntity
             if(Input.pressed(Key.Z)) {
                 velocity.y = -JUMP_POWER;
                 scaleY(JUMP_STRETCH);
+                makeDustAtFeet();
             }
         }
         else if(isOnWall()) {
@@ -139,11 +147,14 @@ class Player extends ActiveEntity
             }
             if(Input.pressed(Key.Z)) {
                 velocity.y = -WALL_JUMP_POWER_Y;
+                scaleY(WALL_JUMP_STRETCH_Y);
                 if(isOnLeftWall()) {
                     velocity.x = WALL_JUMP_POWER_X;
+                    scaleX(WALL_JUMP_STRETCH_X, false);
                 }
                 else {
                     velocity.x = -WALL_JUMP_POWER_X;
+                    scaleX(WALL_JUMP_STRETCH_X, true);
                 }
             }
         }
@@ -206,6 +217,7 @@ class Player extends ActiveEntity
 
         if(!wasOnGround && isOnGround()) {
             scaleY(LAND_SQUASH);
+            makeDustAtFeet();
         }
         if(!wasOnWall && isOnWall()) {
             if(isOnRightWall()) {
