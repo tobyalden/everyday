@@ -7,15 +7,15 @@ import com.haxepunk.graphics.*;
 
 class Player extends ActiveEntity
 {
-    public static inline var RUN_ACCEL = 0.3;
-    public static inline var RUN_DECCEL = 0.45;
-    public static inline var AIR_ACCEL = 0.25;
-    public static inline var AIR_DECCEL = 0.3;
-    public static inline var MAX_RUN_VELOCITY = 1.8;
-    public static inline var JUMP_POWER = 2;
+    public static inline var RUN_ACCEL = 0.15;
+    public static inline var RUN_DECCEL = 0.3;
+    public static inline var AIR_ACCEL = 0.15;
+    public static inline var AIR_DECCEL = 0.1;
+    public static inline var MAX_RUN_VELOCITY = 1.6;
+    public static inline var JUMP_POWER = 2.4;
     public static inline var DOUBLE_JUMP_POWER = 2;
-    //public static inline var JUMP_CANCEL_POWER = 0.5;
-    public static inline var GRAVITY = 0.12;
+    public static inline var JUMP_CANCEL_POWER = 0.5;
+    public static inline var GRAVITY = 0.13;
     public static inline var MAX_FALL_VELOCITY = 3;
 
     private var isTurning:Bool;
@@ -41,18 +41,19 @@ class Player extends ActiveEntity
 
     public override function update()
     {
+        isTurning = (
+            Input.check(Key.LEFT) && velocity.x >= 0 ||
+            Input.check(Key.RIGHT) && velocity.x <= 0
+        );
+
         // If the player is changing directions or just starting to move,
         // multiply their acceleration
-        isTurning = (
-            Input.check(Key.LEFT) && velocity.x > 0 ||
-            Input.check(Key.RIGHT) && velocity.x < 0
-        );
-        var turnMultiplier = 1.0;
-        if(velocity.x == 0) {
-            turnMultiplier = 1.5;
+        var accelMultiplier = 1.0;
+        if(velocity.x == 0 && isOnGround()) {
+            accelMultiplier = 3;
         }
-        if(isTurning) {
-            turnMultiplier = 1.25;
+        else if(Input.pressed(Key.Z) && canDoubleJump) {
+            accelMultiplier = 2;
         }
 
         var accel = AIR_ACCEL;
@@ -64,10 +65,10 @@ class Player extends ActiveEntity
 
         // Check if the player is moving left or right
         if(Input.check(Key.LEFT)) {
-            velocity.x -= accel * turnMultiplier;
+            velocity.x -= accel * accelMultiplier;
         }
         else if(Input.check(Key.RIGHT)) {
-            velocity.x += accel * turnMultiplier;
+            velocity.x += accel * accelMultiplier;
         }
         else {
             if(velocity.x > 0) {
@@ -92,9 +93,9 @@ class Player extends ActiveEntity
                 velocity.y = -DOUBLE_JUMP_POWER;
                 canDoubleJump = false;
             }
-            //if(Input.released(Key.Z)) {
-                //velocity.y = Math.max(-JUMP_CANCEL_POWER, velocity.y);
-            //}
+            if(Input.released(Key.Z)) {
+                velocity.y = Math.max(-JUMP_CANCEL_POWER, velocity.y);
+            }
         }
 
         // Cap the player's velocity
