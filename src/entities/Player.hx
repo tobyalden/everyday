@@ -17,7 +17,7 @@ class Player extends ActiveEntity
     public static inline var JUMP_POWER = 2.4;
     public static inline var DOUBLE_JUMP_POWER = 2;
     public static inline var WALL_JUMP_POWER_X = 3;
-    public static inline var WALL_JUMP_POWER_Y = 1.95;
+    public static inline var WALL_JUMP_POWER_Y = 1.975;
     public static inline var JUMP_CANCEL_POWER = 0.5;
     public static inline var GRAVITY = 0.13;
     public static inline var WALL_GRAVITY = 0.1;
