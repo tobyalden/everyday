@@ -152,7 +152,12 @@ class Player extends ActiveEntity
         }
 
         if(!isOnGround()) {
-            sprite.play("jump");
+            if(isOnWall()) {
+                sprite.play("wall");
+            }
+            else {
+                sprite.play("jump");
+            }
         }
         else if(velocity.x != 0) {
             if(isTurning) {

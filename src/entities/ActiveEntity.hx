@@ -40,10 +40,7 @@ class ActiveEntity extends Entity
 
     private function isOnWall()
     {
-        return (
-            collide("walls", x - 1, y) != null ||
-            collide("walls", x + 1, y) != null
-        );
+        return isOnRightWall() || isOnLeftWall();
     }
 
     private function isOnRightWall()
