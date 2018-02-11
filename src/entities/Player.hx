@@ -26,6 +26,7 @@ class Player extends ActiveEntity
     // Animation constants
     public static inline var LAND_SQUASH = 0.5;
     public static inline var SQUASH_RECOVERY = 0.05;
+    public static inline var HORIZONTAL_SQUASH_RECOVERY = 0.06;
     public static inline var AIR_SQUASH_RECOVERY = 0.03;
     public static inline var JUMP_STRETCH = 1.5;
     public static inline var DOUBLE_JUMP_STRETCH = 1.4;
@@ -190,11 +191,17 @@ class Player extends ActiveEntity
             scaleY(Math.min(sprite.scaleY + squashRecovery, 1));
         }
 
+        squashRecovery = HORIZONTAL_SQUASH_RECOVERY;
+
         if(sprite.scaleX > 1) {
-            scaleX(Math.max(sprite.scaleX - squashRecovery, 1), lastWallWasRight);
+            scaleX(
+                Math.max(sprite.scaleX - squashRecovery, 1), lastWallWasRight
+            );
         }
         else if(sprite.scaleX < 1) {
-            scaleX(Math.min(sprite.scaleX + squashRecovery, 1), lastWallWasRight);
+            scaleX(
+                Math.min(sprite.scaleX + squashRecovery, 1), lastWallWasRight
+            );
         }
 
         if(!wasOnGround && isOnGround()) {
