@@ -7,6 +7,7 @@ import com.haxepunk.graphics.*;
 
 class Player extends ActiveEntity
 {
+    // Movement constants
     public static inline var RUN_ACCEL = 0.15;
     public static inline var RUN_DECCEL = 0.3;
     public static inline var AIR_ACCEL = 0.15;
@@ -18,8 +19,13 @@ class Player extends ActiveEntity
     public static inline var GRAVITY = 0.13;
     public static inline var MAX_FALL_VELOCITY = 3;
 
+    // Animation constants
+    public static inline var LAND_SQUASH = 0.7;
+    public static inline var SQUASH_RECOVERY = 0.03;
+
     private var isTurning:Bool;
     private var canDoubleJump:Bool;
+    private var wasOnGround:Bool;
 
     public function new(x:Int, y:Int)
     {
@@ -35,8 +41,15 @@ class Player extends ActiveEntity
 
         isTurning = false;
         canDoubleJump = false;
+        wasOnGround = false;
 
 	    finishInitializing();
+    }
+
+    private function scaleY(newScaleY:Float) {
+        // Scales sprite vertically "upward", keeping its feet on the ground
+        sprite.scaleY = newScaleY;
+        sprite.originY = height - (height / sprite.scaleY);
     }
 
     public override function update()
@@ -45,6 +58,10 @@ class Player extends ActiveEntity
             Input.check(Key.LEFT) && velocity.x >= 0 ||
             Input.check(Key.RIGHT) && velocity.x <= 0
         );
+
+        if(Input.pressed(Key.Y)) {
+            scaleY(HXP.choose(1, 2, 3, 4.5, 2.3, 0.3, 0.1, 0.54, 0.88));
+        }
 
         // If the player is changing directions or just starting to move,
         // multiply their acceleration
@@ -103,6 +120,8 @@ class Player extends ActiveEntity
         velocity.x = Math.max(velocity.x, -MAX_RUN_VELOCITY);
         velocity.y = Math.min(velocity.y, MAX_FALL_VELOCITY);
 
+        wasOnGround = isOnGround();
+
         moveBy(velocity.x, velocity.y, "walls");
         animate();
 
@@ -111,6 +130,16 @@ class Player extends ActiveEntity
 
     private function animate()
     {
+        if(!wasOnGround && isOnGround()) {
+            scaleY(LAND_SQUASH);
+        }
+        else if(sprite.scaleY > 1) {
+            scaleY(Math.max(sprite.scaleY - SQUASH_RECOVERY, 1));
+        }
+        else if(sprite.scaleY < 1) {
+            scaleY(Math.min(sprite.scaleY + SQUASH_RECOVERY, 1));
+        }
+
         if(!isOnGround()) {
             sprite.play("jump");
         }
