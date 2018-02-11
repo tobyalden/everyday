@@ -75,8 +75,23 @@ class Player extends ActiveEntity
         sprite.originY = height - (height / sprite.scaleY);
     }
 
+    private function makeDustOnWall(isLeftWall:Bool) {
+        var dust:Dust;
+        if(isLeftWall) {
+            dust = new Dust(x + 1, centerY - 2, false);
+        }
+        else {
+            dust = new Dust(x + width - 3, centerY - 2, false);
+            dust.sprite.flipped = true;
+        }
+        scene.add(dust);
+    }
+
     private function makeDustAtFeet() {
-        var dust = new Dust(x, bottom - 4);
+        var dust = new Dust(x, bottom - 4, true);
+        if(sprite.flipped) {
+            dust.x += 0.5;
+        }
         scene.add(dust);
     }
 
@@ -151,10 +166,12 @@ class Player extends ActiveEntity
                 if(isOnLeftWall()) {
                     velocity.x = WALL_JUMP_POWER_X;
                     scaleX(WALL_JUMP_STRETCH_X, false);
+                    makeDustOnWall(true);
                 }
                 else {
                     velocity.x = -WALL_JUMP_POWER_X;
                     scaleX(WALL_JUMP_STRETCH_X, true);
+                    makeDustOnWall(false);
                 }
             }
         }
@@ -163,6 +180,7 @@ class Player extends ActiveEntity
             if(Input.pressed(Key.Z) && canDoubleJump) {
                 velocity.y = -DOUBLE_JUMP_POWER;
                 scaleY(DOUBLE_JUMP_STRETCH);
+                makeDustAtFeet();
                 canDoubleJump = false;
             }
             if(Input.released(Key.Z)) {

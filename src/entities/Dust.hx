@@ -6,11 +6,16 @@ import com.haxepunk.graphics.*;
 
 class Dust extends ActiveEntity
 {
-    public function new(x:Float, y:Float)
+    public function new(x:Float, y:Float, isGround:Bool)
     {
 	    super(x, y);
         type = "dust";
-        sprite = new Spritemap("graphics/grounddust.png", 8, 4);
+        if(isGround) {
+            sprite = new Spritemap("graphics/grounddust.png", 8, 4);
+        }
+        else {
+            sprite = new Spritemap("graphics/walldust.png", 4, 8);
+        }
         sprite.add("idle", [0, 1, 2, 3, 4], 16, false);
         sprite.play("idle");
         finishInitializing();
