@@ -24,6 +24,7 @@ class Player extends ActiveEntity
     public static inline var SQUASH_RECOVERY = 0.05;
     public static inline var AIR_SQUASH_RECOVERY = 0.03;
     public static inline var JUMP_STRETCH = 1.5;
+    public static inline var DOUBLE_JUMP_STRETCH = 1.4;
 
     private var isTurning:Bool;
     private var canDoubleJump:Bool;
@@ -111,6 +112,7 @@ class Player extends ActiveEntity
             velocity.y += GRAVITY;
             if(Input.pressed(Key.Z) && canDoubleJump) {
                 velocity.y = -DOUBLE_JUMP_POWER;
+                scaleY(DOUBLE_JUMP_STRETCH);
                 canDoubleJump = false;
             }
             if(Input.released(Key.Z)) {
