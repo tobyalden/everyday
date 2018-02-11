@@ -10,12 +10,13 @@ class Player extends ActiveEntity
     // Movement constants
     public static inline var RUN_ACCEL = 0.15;
     public static inline var RUN_DECCEL = 0.3;
-    public static inline var AIR_ACCEL = 0.15;
+    public static inline var AIR_ACCEL = 0.13;
     public static inline var AIR_DECCEL = 0.1;
     public static inline var MAX_RUN_VELOCITY = 1.6;
+    public static inline var MAX_AIR_VELOCITY = 2;
     public static inline var JUMP_POWER = 2.4;
     public static inline var DOUBLE_JUMP_POWER = 2;
-    public static inline var WALL_JUMP_POWER_X = 2;
+    public static inline var WALL_JUMP_POWER_X = 3;
     public static inline var WALL_JUMP_POWER_Y = 2;
     public static inline var JUMP_CANCEL_POWER = 0.5;
     public static inline var GRAVITY = 0.13;
@@ -84,6 +85,9 @@ class Player extends ActiveEntity
         if(isOnGround()) {
             accel = RUN_ACCEL;
             deccel = RUN_DECCEL;
+            if(isOnWall()) {
+                velocity.x = 0;
+            }
         }
 
         // Check if the player is moving left or right
@@ -112,7 +116,12 @@ class Player extends ActiveEntity
             }
         }
         else if(isOnWall()) {
-            velocity.y += WALL_GRAVITY;
+            if(velocity.y < 0) {
+                velocity.y += GRAVITY;
+            }
+            else {
+                velocity.y += WALL_GRAVITY;
+            }
             if(Input.pressed(Key.Z)) {
                 velocity.y = -WALL_JUMP_POWER_Y;
                 if(isOnLeftWall()) {
@@ -136,8 +145,12 @@ class Player extends ActiveEntity
         }
 
         // Cap the player's velocity
-        velocity.x = Math.min(velocity.x, MAX_RUN_VELOCITY);
-        velocity.x = Math.max(velocity.x, -MAX_RUN_VELOCITY);
+        var maxVelocity:Float = MAX_AIR_VELOCITY;
+        if(isOnGround()) {
+            maxVelocity = MAX_RUN_VELOCITY;
+        }
+        velocity.x = Math.min(velocity.x, maxVelocity);
+        velocity.x = Math.max(velocity.x, -maxVelocity);
         velocity.y = Math.min(velocity.y, MAX_FALL_VELOCITY);
 
         wasOnGround = isOnGround();
