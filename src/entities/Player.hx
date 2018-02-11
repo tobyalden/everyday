@@ -15,8 +15,11 @@ class Player extends ActiveEntity
     public static inline var MAX_RUN_VELOCITY = 1.6;
     public static inline var JUMP_POWER = 2.4;
     public static inline var DOUBLE_JUMP_POWER = 2;
+    public static inline var WALL_JUMP_POWER_X = 2;
+    public static inline var WALL_JUMP_POWER_Y = 2;
     public static inline var JUMP_CANCEL_POWER = 0.5;
     public static inline var GRAVITY = 0.13;
+    public static inline var WALL_GRAVITY = 0.1;
     public static inline var MAX_FALL_VELOCITY = 3;
 
     // Animation constants
@@ -106,6 +109,18 @@ class Player extends ActiveEntity
             if(Input.pressed(Key.Z)) {
                 velocity.y = -JUMP_POWER;
                 scaleY(JUMP_STRETCH);
+            }
+        }
+        else if(isOnWall()) {
+            velocity.y += WALL_GRAVITY;
+            if(Input.pressed(Key.Z)) {
+                velocity.y = -WALL_JUMP_POWER_Y;
+                if(isOnLeftWall()) {
+                    velocity.x = WALL_JUMP_POWER_X;
+                }
+                else {
+                    velocity.x = -WALL_JUMP_POWER_X;
+                }
             }
         }
         else {
