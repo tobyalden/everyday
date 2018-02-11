@@ -20,8 +20,10 @@ class Player extends ActiveEntity
     public static inline var MAX_FALL_VELOCITY = 3;
 
     // Animation constants
-    public static inline var LAND_SQUASH = 0.7;
-    public static inline var SQUASH_RECOVERY = 0.03;
+    public static inline var LAND_SQUASH = 0.5;
+    public static inline var SQUASH_RECOVERY = 0.05;
+    public static inline var AIR_SQUASH_RECOVERY = 0.03;
+    public static inline var JUMP_STRETCH = 1.5;
 
     private var isTurning:Bool;
     private var canDoubleJump:Bool;
@@ -102,6 +104,7 @@ class Player extends ActiveEntity
             canDoubleJump = true;
             if(Input.pressed(Key.Z)) {
                 velocity.y = -JUMP_POWER;
+                scaleY(JUMP_STRETCH);
             }
         }
         else {
@@ -130,14 +133,20 @@ class Player extends ActiveEntity
 
     private function animate()
     {
-        if(!wasOnGround && isOnGround()) {
-            scaleY(LAND_SQUASH);
+        var squashRecovery = AIR_SQUASH_RECOVERY;
+        if(isOnGround()) {
+            squashRecovery = SQUASH_RECOVERY;
         }
-        else if(sprite.scaleY > 1) {
-            scaleY(Math.max(sprite.scaleY - SQUASH_RECOVERY, 1));
+
+        if(sprite.scaleY > 1) {
+            scaleY(Math.max(sprite.scaleY - squashRecovery, 1));
         }
         else if(sprite.scaleY < 1) {
-            scaleY(Math.min(sprite.scaleY + SQUASH_RECOVERY, 1));
+            scaleY(Math.min(sprite.scaleY + squashRecovery, 1));
+        }
+
+        if(!wasOnGround && isOnGround()) {
+            scaleY(LAND_SQUASH);
         }
 
         if(!isOnGround()) {
