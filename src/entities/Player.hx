@@ -29,10 +29,13 @@ class Player extends ActiveEntity
     public static inline var AIR_SQUASH_RECOVERY = 0.03;
     public static inline var JUMP_STRETCH = 1.5;
     public static inline var DOUBLE_JUMP_STRETCH = 1.4;
+    public static inline var WALL_SQUASH = 0.5;
 
     private var isTurning:Bool;
     private var canDoubleJump:Bool;
     private var wasOnGround:Bool;
+    private var wasOnWall:Bool;
+    private var lastWallWasRight:Bool;
 
     public function new(x:Int, y:Int)
     {
@@ -49,12 +52,22 @@ class Player extends ActiveEntity
         isTurning = false;
         canDoubleJump = false;
         wasOnGround = false;
+        wasOnWall = false;
+        lastWallWasRight = false;
 
 	    finishInitializing();
     }
 
+    private function scaleX(newScaleX:Float, toLeft:Bool) {
+        // Scales sprite horizontally in the specified direction
+        sprite.scaleX = newScaleX;
+        if(toLeft) {
+            sprite.originX = width - (width / sprite.scaleX);
+        }
+    }
+
     private function scaleY(newScaleY:Float) {
-        // Scales sprite vertically "upward", keeping its feet on the ground
+        // Scales sprite vertically upwards
         sprite.scaleY = newScaleY;
         sprite.originY = height - (height / sprite.scaleY);
     }
@@ -65,10 +78,6 @@ class Player extends ActiveEntity
             Input.check(Key.LEFT) && velocity.x >= 0 ||
             Input.check(Key.RIGHT) && velocity.x <= 0
         );
-
-        if(Input.pressed(Key.Y)) {
-            scaleY(HXP.choose(1, 2, 3, 4.5, 2.3, 0.3, 0.1, 0.54, 0.88));
-        }
 
         // If the player is changing directions or just starting to move,
         // multiply their acceleration
@@ -159,6 +168,7 @@ class Player extends ActiveEntity
         velocity.y = Math.min(velocity.y, MAX_FALL_VELOCITY);
 
         wasOnGround = isOnGround();
+        wasOnWall = isOnWall();
 
         moveBy(velocity.x, velocity.y, "walls");
         animate();
@@ -180,8 +190,24 @@ class Player extends ActiveEntity
             scaleY(Math.min(sprite.scaleY + squashRecovery, 1));
         }
 
+        if(sprite.scaleX > 1) {
+            scaleX(Math.max(sprite.scaleX - squashRecovery, 1), lastWallWasRight);
+        }
+        else if(sprite.scaleX < 1) {
+            scaleX(Math.min(sprite.scaleX + squashRecovery, 1), lastWallWasRight);
+        }
+
         if(!wasOnGround && isOnGround()) {
             scaleY(LAND_SQUASH);
+        }
+        if(!wasOnWall && isOnWall()) {
+            if(isOnRightWall()) {
+                lastWallWasRight = true;
+            }
+            else {
+                lastWallWasRight = false;
+            }
+            scaleX(WALL_SQUASH, lastWallWasRight);
         }
 
         if(!isOnGround()) {
