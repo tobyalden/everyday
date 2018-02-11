@@ -22,6 +22,7 @@ class Player extends ActiveEntity
     public static inline var GRAVITY = 0.13;
     public static inline var WALL_GRAVITY = 0.1;
     public static inline var MAX_FALL_VELOCITY = 3;
+    public static inline var WALL_STICK_VELOCITY = 1;
 
     // Animation constants
     public static inline var LAND_SQUASH = 0.5;
@@ -240,9 +241,11 @@ class Player extends ActiveEntity
         if(!wasOnWall && isOnWall()) {
             if(isOnRightWall()) {
                 lastWallWasRight = true;
+                velocity.x = Math.min(velocity.x, WALL_STICK_VELOCITY);
             }
             else {
                 lastWallWasRight = false;
+                velocity.x = Math.max(velocity.x, -WALL_STICK_VELOCITY);
             }
             scaleX(WALL_SQUASH, lastWallWasRight);
         }
