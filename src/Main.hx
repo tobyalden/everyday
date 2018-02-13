@@ -15,6 +15,6 @@ class Main extends Engine
 
     public static function main()
     {
-        new Main();
+        new Main(640, 360, 60, true);
     }
 }
