@@ -98,6 +98,12 @@ class Player extends ActiveEntity
 
     public override function update()
     {
+        movement();
+        animation();
+        super.update();
+    }
+
+    private function movement() {
         isTurning = (
             Input.check(Key.LEFT) && velocity.x >= 0 ||
             Input.check(Key.RIGHT) && velocity.x <= 0
@@ -202,12 +208,9 @@ class Player extends ActiveEntity
         wasOnWall = isOnWall();
 
         moveBy(velocity.x, velocity.y, "walls");
-        animate();
-
-        super.update();
     }
 
-    private function animate()
+    private function animation()
     {
         var squashRecovery = AIR_SQUASH_RECOVERY;
         if(isOnGround()) {
