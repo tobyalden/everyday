@@ -6,12 +6,14 @@ import com.haxepunk.tmx.*;
 
 class Level extends TmxEntity
 {
+    public static inline var TILE_SIZE = 8;
+
     public static inline var PLAYER = 17;
     public static inline var SPIKE_FLOOR = 21;
     public static inline var SPIKE_CEILING = 22;
     public static inline var SPIKE_LEFT_WALL = 23;
     public static inline var SPIKE_RIGHT_WALL = 24;
-    
+
     public var entities:Array<Entity>;
 
     public function new(filename:String)
@@ -25,8 +27,21 @@ class Level extends TmxEntity
             if(entity.gid == PLAYER) {
                 entities.push(new Player(entity.x, entity.y));
             }
-            if(entity.gid == SPIKE_FLOOR) {
-                entities.push(new Spike(entity.x, entity.y - 8));
+            else if(entity.gid == SPIKE_FLOOR) {
+                entities.push(
+                    new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
+                );
+            }
+            else if(entity.gid == SPIKE_CEILING) {
+                entities.push(
+                    new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
+                );
+            }
+            else if(entity.gid == SPIKE_LEFT_WALL) {
+                entities.push(new Spike(entity.x, entity.y, entity.gid));
+            }
+            else if(entity.gid == SPIKE_RIGHT_WALL) {
+                entities.push(new Spike(entity.x, entity.y, entity.gid));
             }
         }
     }
