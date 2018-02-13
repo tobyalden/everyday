@@ -7,6 +7,10 @@ import com.haxepunk.tmx.*;
 class Level extends TmxEntity
 {
     public static inline var PLAYER = 17;
+    public static inline var SPIKE_FLOOR = 21;
+    public static inline var SPIKE_CEILING = 22;
+    public static inline var SPIKE_LEFT_WALL = 23;
+    public static inline var SPIKE_RIGHT_WALL = 24;
     
     public var entities:Array<Entity>;
 
@@ -20,6 +24,9 @@ class Level extends TmxEntity
         for(entity in map.getObjectGroup("entities").objects) {
             if(entity.gid == PLAYER) {
                 entities.push(new Player(entity.x, entity.y));
+            }
+            if(entity.gid == SPIKE_FLOOR) {
+                entities.push(new Spike(entity.x, entity.y - 8));
             }
         }
     }
