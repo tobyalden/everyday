@@ -7,7 +7,7 @@ import scenes.*;
 
 class Wipe extends Entity
 {
-    public static inline var WIPE_SPEED = 10;
+    public static inline var WIPE_SPEED = 17;
 
     private var wipeIn:Bool;
     private var sprite:Image;

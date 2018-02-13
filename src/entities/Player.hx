@@ -38,6 +38,8 @@ class Player extends ActiveEntity
     public static inline var WALL_JUMP_STRETCH_X = 1.4;
     public static inline var WALL_JUMP_STRETCH_Y = 1.4;
 
+    public static inline var WIPE_DELAY = 0.5;
+
     private var isTurning:Bool;
     private var canDoubleJump:Bool;
     private var wasOnGround:Bool;
@@ -55,7 +57,7 @@ class Player extends ActiveEntity
         sprite.add("jump", [4]);
         sprite.add("wall", [5]);
         sprite.add("skid", [6]);
-        sprite.add("die", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 16, false);
+        sprite.add("die", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 60, false);
         sprite.play("idle");
         setHitbox(6, 12, -1, 0);
 
@@ -113,7 +115,9 @@ class Player extends ActiveEntity
             if(sprite.complete && visible) {
                 visible = false;
                 explode();
-                var wipeDelay = new Alarm(1, screenWipe, TweenType.OneShot);
+                var wipeDelay = new Alarm(
+                    WIPE_DELAY, screenWipe, TweenType.OneShot
+                );
                 addTween(wipeDelay, true);
             }
         }
