@@ -19,6 +19,9 @@ class GameScene extends Scene
         for (entity in level.entities) {
             add(entity);
         }
+
+        var wipe = new Wipe(true);
+        add(wipe);
     }
 
     public override function update() {

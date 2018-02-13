@@ -3,6 +3,8 @@ package entities;
 import com.haxepunk.*;
 import com.haxepunk.utils.*;
 import com.haxepunk.graphics.*;
+import com.haxepunk.Tween;
+import com.haxepunk.tweens.misc.*;
 import flash.geom.Point;
 import flash.system.System;
 
@@ -110,29 +112,40 @@ class Player extends ActiveEntity
         else {
             if(sprite.complete && visible) {
                 visible = false;
-                var directions = [
-                    new Point(1, 1),
-                    new Point(1, 0),
-                    new Point(1, -1),
-                    new Point(0, 1),
-                    new Point(0, -1),
-                    new Point(-1, 1),
-                    new Point(-1, 0),
-                    new Point(-1, -1)
-                ];
-                var count = 0;
-                for(direction in directions) {
-                    var explosion = new Explosion(
-                        centerX,
-                        centerY,
-                        directions[count]
-                    );
-                    scene.add(explosion);
-                    count++;
-                }
+                explode();
+                var wipeDelay = new Alarm(1, screenWipe, TweenType.OneShot);
+                addTween(wipeDelay, true);
             }
         }
         super.update();
+    }
+
+    private function screenWipe(_):Void {
+        var wipe = new Wipe(false);
+        scene.add(wipe);
+    }
+
+    private function explode() {
+        var directions = [
+            new Point(1, 1),
+            new Point(1, 0),
+            new Point(1, -1),
+            new Point(0, 1),
+            new Point(0, -1),
+            new Point(-1, 1),
+            new Point(-1, 0),
+            new Point(-1, -1)
+        ];
+        var count = 0;
+        for(direction in directions) {
+            var explosion = new Explosion(
+                centerX,
+                centerY,
+                directions[count]
+            );
+            scene.add(explosion);
+            count++;
+        }
     }
 
     private function collisions() {

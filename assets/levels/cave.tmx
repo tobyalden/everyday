@@ -62,7 +62,7 @@
  </layer>
  <objectgroup name="entities">
   <object id="2" gid="17" x="16" y="152" width="8" height="8"/>
-  <object id="3" gid="21" x="128" y="168" width="8" height="8"/>
+  <object id="3" gid="21" x="56" y="168" width="8" height="8"/>
   <object id="4" gid="21" x="136" y="168" width="8" height="8"/>
   <object id="5" gid="24" x="160" y="128" width="8" height="8"/>
   <object id="6" gid="23" x="176" y="96" width="8" height="8"/>
