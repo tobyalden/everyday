@@ -8,8 +8,7 @@ class Dust extends ActiveEntity
 {
     public function new(x:Float, y:Float, isGround:Bool)
     {
-	    super(x, y);
-        type = "dust";
+        super(x, y);
         if(isGround) {
             sprite = new Spritemap("graphics/grounddust.png", 8, 4);
         }

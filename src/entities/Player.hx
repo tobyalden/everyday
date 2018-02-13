@@ -1,9 +1,10 @@
 package entities;
 
-import flash.system.System;
 import com.haxepunk.*;
 import com.haxepunk.utils.*;
 import com.haxepunk.graphics.*;
+import flash.geom.Point;
+import flash.system.System;
 
 class Player extends ActiveEntity
 {
@@ -41,6 +42,8 @@ class Player extends ActiveEntity
     private var wasOnWall:Bool;
     private var lastWallWasRight:Bool;
 
+    private var isDying:Bool;
+
     public function new(x:Float, y:Float)
     {
 	    super(x, y);
@@ -50,6 +53,7 @@ class Player extends ActiveEntity
         sprite.add("jump", [4]);
         sprite.add("wall", [5]);
         sprite.add("skid", [6]);
+        sprite.add("die", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 16, false);
         sprite.play("idle");
         setHitbox(6, 12, -1, 0);
 
@@ -98,9 +102,48 @@ class Player extends ActiveEntity
 
     public override function update()
     {
-        movement();
-        animation();
+        collisions();
+        if(!isDying) {
+            movement();
+            animation();
+        }
+        else {
+            if(sprite.complete && visible) {
+                visible = false;
+                var directions = [
+                    new Point(1, 1),
+                    new Point(1, 0),
+                    new Point(1, -1),
+                    new Point(0, 1),
+                    new Point(0, -1),
+                    new Point(-1, 1),
+                    new Point(-1, 0),
+                    new Point(-1, -1)
+                ];
+                var count = 0;
+                for(direction in directions) {
+                    var explosion = new Explosion(
+                        centerX,
+                        centerY,
+                        directions[count]
+                    );
+                    scene.add(explosion);
+                    count++;
+                }
+            }
+        }
         super.update();
+    }
+
+    private function collisions() {
+        if(collide("hazard", x, y) != null) {
+            die();
+        }
+    }
+
+    private function die() {
+        isDying = true;
+        sprite.play("die");
     }
 
     private function movement() {
