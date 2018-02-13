@@ -38,10 +38,14 @@ class Level extends TmxEntity
                 );
             }
             else if(entity.gid == SPIKE_LEFT_WALL) {
-                entities.push(new Spike(entity.x, entity.y, entity.gid));
+                entities.push(
+                    new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
+                );
             }
             else if(entity.gid == SPIKE_RIGHT_WALL) {
-                entities.push(new Spike(entity.x, entity.y, entity.gid));
+                entities.push(
+                    new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
+                );
             }
         }
     }

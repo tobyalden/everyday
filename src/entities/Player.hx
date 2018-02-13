@@ -39,6 +39,7 @@ class Player extends ActiveEntity
     public static inline var WALL_JUMP_STRETCH_Y = 1.4;
 
     public static inline var WIPE_DELAY = 0.5;
+    public static inline var RESTART_DELAY = 0.25;
 
     private var isTurning:Bool;
     private var canDoubleJump:Bool;
@@ -47,6 +48,7 @@ class Player extends ActiveEntity
     private var lastWallWasRight:Bool;
 
     private var isDying:Bool;
+    private var canMove:Bool;
 
     public function new(x:Float, y:Float)
     {
@@ -66,6 +68,12 @@ class Player extends ActiveEntity
         wasOnGround = false;
         wasOnWall = false;
         lastWallWasRight = false;
+
+        canMove = false;
+        var restartDelay = new Alarm(
+            RESTART_DELAY, function(_) { canMove = true; }, TweenType.OneShot
+        );
+        addTween(restartDelay, true);
 
 	    finishInitializing();
     }
@@ -108,7 +116,9 @@ class Player extends ActiveEntity
     {
         collisions();
         if(!isDying) {
-            movement();
+            if(canMove) {
+                movement();
+            }
             animation();
         }
         else {
