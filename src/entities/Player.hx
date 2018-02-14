@@ -50,6 +50,8 @@ class Player extends ActiveEntity
     private var isDying:Bool;
     private var canMove:Bool;
 
+    private var delta:Float;
+
     public function new(x:Float, y:Float)
     {
 	    super(x, y);
@@ -114,6 +116,7 @@ class Player extends ActiveEntity
 
     public override function update()
     {
+        delta = HXP.elapsed * 60;
         collisions();
         if(!isDying) {
             if(canMove) {
@@ -189,8 +192,8 @@ class Player extends ActiveEntity
             accelMultiplier = 2;
         }
 
-        var accel = AIR_ACCEL;
-        var deccel = AIR_DECCEL;
+        var accel:Float = AIR_ACCEL;
+        var deccel:Float = AIR_DECCEL;
         if(isOnGround()) {
             accel = RUN_ACCEL;
             deccel = RUN_DECCEL;
@@ -203,6 +206,9 @@ class Player extends ActiveEntity
             velocity.y = 0;
             scaleY(1);
         }
+
+        accel *= delta;
+        deccel *= delta;
 
         // Check if the player is moving left or right
         if(Input.check(Key.LEFT)) {
@@ -220,6 +226,9 @@ class Player extends ActiveEntity
             }
         }
 
+        var gravity = GRAVITY * delta;
+        var wallGravity = WALL_GRAVITY * delta;
+
         // Check if the player is jumping or falling
         if(isOnGround()) {
             velocity.y = 0;
@@ -232,10 +241,10 @@ class Player extends ActiveEntity
         }
         else if(isOnWall()) {
             if(velocity.y < 0) {
-                velocity.y += GRAVITY;
+                velocity.y += gravity;
             }
             else {
-                velocity.y += WALL_GRAVITY;
+                velocity.y += wallGravity;
             }
             if(Input.pressed(Key.Z)) {
                 velocity.y = -WALL_JUMP_POWER_Y;
@@ -253,7 +262,7 @@ class Player extends ActiveEntity
             }
         }
         else {
-            velocity.y += GRAVITY;
+            velocity.y += gravity;
             if(Input.pressed(Key.Z) && canDoubleJump) {
                 velocity.y = -DOUBLE_JUMP_POWER;
                 scaleY(DOUBLE_JUMP_STRETCH);
@@ -277,15 +286,16 @@ class Player extends ActiveEntity
         wasOnGround = isOnGround();
         wasOnWall = isOnWall();
 
-        moveBy(velocity.x, velocity.y, "walls");
+        moveBy(velocity.x * delta, velocity.y * delta, "walls");
     }
 
     private function animation()
     {
-        var squashRecovery = AIR_SQUASH_RECOVERY;
+        var squashRecovery:Float = AIR_SQUASH_RECOVERY;
         if(isOnGround()) {
             squashRecovery = SQUASH_RECOVERY;
         }
+        squashRecovery *= delta;
 
         if(sprite.scaleY > 1) {
             scaleY(Math.max(sprite.scaleY - squashRecovery, 1));
@@ -294,7 +304,7 @@ class Player extends ActiveEntity
             scaleY(Math.min(sprite.scaleY + squashRecovery, 1));
         }
 
-        squashRecovery = HORIZONTAL_SQUASH_RECOVERY;
+        squashRecovery = HORIZONTAL_SQUASH_RECOVERY * delta;
 
         if(sprite.scaleX > 1) {
             scaleX(
