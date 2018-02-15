@@ -95,20 +95,30 @@ class Player extends ActiveEntity
         sprite.originY = height - (height / sprite.scaleY);
     }
 
-    private function makeDustOnWall(isLeftWall:Bool) {
+    private function makeDustOnWall(isLeftWall:Bool, fromSlide:Bool) {
         var dust:Dust;
-        if(isLeftWall) {
-            dust = new Dust(x + 1, centerY - 2, false);
+        if(fromSlide) {
+            if(isLeftWall) {
+                dust = new Dust(left, y, "slide");
+            }
+            else {
+                dust = new Dust(right, y, "slide");
+            }
         }
         else {
-            dust = new Dust(x + width - 3, centerY - 2, false);
-            dust.sprite.flipped = true;
+            if(isLeftWall) {
+                dust = new Dust(x + 1, centerY - 2, "wall");
+            }
+            else {
+                dust = new Dust(x + width - 3, centerY - 2, "wall");
+                dust.sprite.flipped = true;
+            }
         }
         scene.add(dust);
     }
 
     private function makeDustAtFeet() {
-        var dust = new Dust(x, bottom - 4, true);
+        var dust = new Dust(x, bottom - 4, "ground");
         if(sprite.flipped) {
             dust.x += 0.5;
         }
@@ -253,12 +263,12 @@ class Player extends ActiveEntity
                 if(isOnLeftWall()) {
                     velocity.x = WALL_JUMP_POWER_X;
                     scaleX(WALL_JUMP_STRETCH_X, false);
-                    makeDustOnWall(true);
+                    makeDustOnWall(true, false);
                 }
                 else {
                     velocity.x = -WALL_JUMP_POWER_X;
                     scaleX(WALL_JUMP_STRETCH_X, true);
-                    makeDustOnWall(false);
+                    makeDustOnWall(false, false);
                 }
             }
         }
@@ -285,6 +295,9 @@ class Player extends ActiveEntity
         var maxFallVelocity = MAX_FALL_VELOCITY;
         if(isOnWall()) {
             maxFallVelocity = MAX_WALL_VELOCITY;
+            if(velocity.y > 0) {
+                makeDustOnWall(isOnLeftWall(), true);
+            }
         }
         velocity.y = Math.min(velocity.y, maxFallVelocity);
 
