@@ -99,10 +99,10 @@ class Player extends ActiveEntity
         var dust:Dust;
         if(fromSlide) {
             if(isLeftWall) {
-                dust = new Dust(left, y, "slide");
+                dust = new Dust(left, centerY, "slide");
             }
             else {
-                dust = new Dust(right, y, "slide");
+                dust = new Dust(right, centerY, "slide");
             }
         }
         else {
