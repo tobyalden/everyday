@@ -23,8 +23,9 @@ class Player extends ActiveEntity
     public static inline var WALL_JUMP_POWER_Y = 2.1;
     public static inline var JUMP_CANCEL_POWER = 0.5;
     public static inline var GRAVITY = 0.13;
-    public static inline var WALL_GRAVITY = 0.1;
+    public static inline var WALL_GRAVITY = 0.08;
     public static inline var MAX_FALL_VELOCITY = 3;
+    public static inline var MAX_WALL_VELOCITY = 2;
     public static inline var WALL_STICK_VELOCITY = 1;
 
     // Animation constants
@@ -281,7 +282,11 @@ class Player extends ActiveEntity
         }
         velocity.x = Math.min(velocity.x, maxVelocity);
         velocity.x = Math.max(velocity.x, -maxVelocity);
-        velocity.y = Math.min(velocity.y, MAX_FALL_VELOCITY);
+        var maxFallVelocity = MAX_FALL_VELOCITY;
+        if(isOnWall()) {
+            maxFallVelocity = MAX_WALL_VELOCITY;
+        }
+        velocity.y = Math.min(velocity.y, maxFallVelocity);
 
         wasOnGround = isOnGround();
         wasOnWall = isOnWall();
