@@ -20,7 +20,7 @@ class Player extends ActiveEntity
     public static inline var JUMP_POWER = 2.4;
     public static inline var DOUBLE_JUMP_POWER = 2;
     public static inline var WALL_JUMP_POWER_X = 3;
-    public static inline var WALL_JUMP_POWER_Y = 1.975;
+    public static inline var WALL_JUMP_POWER_Y = 2.1;
     public static inline var JUMP_CANCEL_POWER = 0.5;
     public static inline var GRAVITY = 0.13;
     public static inline var WALL_GRAVITY = 0.1;
@@ -61,7 +61,7 @@ class Player extends ActiveEntity
         sprite.add("jump", [4]);
         sprite.add("wall", [5]);
         sprite.add("skid", [6]);
-        sprite.add("die", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 60, false);
+        sprite.add("die", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 45, false);
         sprite.play("idle");
         setHitbox(6, 12, -1, 0);
 
