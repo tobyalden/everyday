@@ -296,7 +296,18 @@ class Player extends ActiveEntity
         if(isOnWall()) {
             maxFallVelocity = MAX_WALL_VELOCITY;
             if(velocity.y > 0) {
-                makeDustOnWall(isOnLeftWall(), true);
+                if(
+                    isOnLeftWall() &&
+                    scene.collidePoint("walls", left - 1, top) != null
+                ) {
+                    makeDustOnWall(true, true);
+                }
+                else if(
+                    isOnRightWall() &&
+                    scene.collidePoint("walls", right + 1, top) != null
+                ) {
+                    makeDustOnWall(false, true);
+                }
             }
         }
         velocity.y = Math.min(velocity.y, maxFallVelocity);
