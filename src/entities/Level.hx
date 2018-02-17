@@ -9,6 +9,7 @@ class Level extends TmxEntity
     public static inline var TILE_SIZE = 8;
 
     public static inline var PLAYER = 17;
+    public static inline var SPRING = 18;
     public static inline var SPIKE_FLOOR = 21;
     public static inline var SPIKE_CEILING = 22;
     public static inline var SPIKE_LEFT_WALL = 23;
@@ -25,7 +26,10 @@ class Level extends TmxEntity
         map = TmxMap.loadFromFile(filename);
         for(entity in map.getObjectGroup("entities").objects) {
             if(entity.gid == PLAYER) {
-                entities.push(new Player(entity.x, entity.y));
+                entities.push(new Player(entity.x, entity.y - 12));
+            }
+            else if(entity.gid == SPRING) {
+                entities.push(new Spring(entity.x, entity.y - TILE_SIZE));
             }
             else if(entity.gid == SPIKE_FLOOR) {
                 entities.push(
