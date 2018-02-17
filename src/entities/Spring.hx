@@ -11,6 +11,7 @@ class Spring extends Entity
     public static inline var SQUASH_RECOVERY = 0.05;
 
     private var sprite:Image;
+    private var isBouncing:Bool;
 
     public function new(x:Float, y:Float)
     {
@@ -20,14 +21,32 @@ class Spring extends Entity
         sprite.smooth = false;
         graphic = sprite;
         setHitbox(8, 7, 0, -1);
+        isBouncing = false;
     }
 
     public function bounce() {
+        // Prevent infinite recursion
+        if(isBouncing) {
+            return;
+        }
+        isBouncing = true;
+
         scaleY(BOUNCE_SQUASH);
+
+        // Make adjacent springs bounce so it looks like it's all one spring
+        var leftSpring = collide("spring", x - 1, y);
+        if(leftSpring != null) {
+            cast(leftSpring, Spring).bounce();
+        }
+        var rightSpring = collide("spring", x + 1, y);
+        if(rightSpring != null) {
+            cast(rightSpring, Spring).bounce();
+        }
     }
 
     public override function update()
     {
+        isBouncing = false;
         if(sprite.scaleY < 1) {
             scaleY(Math.min(sprite.scaleY + SQUASH_RECOVERY, 1));
         }
