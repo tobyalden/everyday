@@ -28,6 +28,8 @@ class Player extends ActiveEntity
     public static inline var MAX_WALL_VELOCITY = 2;
     public static inline var WALL_STICK_VELOCITY = 1;
 
+    public static inline var SPRING_POWER = 4;
+
     // Animation constants
     public static inline var LAND_SQUASH = 0.5;
     public static inline var SQUASH_RECOVERY = 0.05;
@@ -50,6 +52,7 @@ class Player extends ActiveEntity
 
     private var isDying:Bool;
     private var canMove:Bool;
+    private var isBouncing:Bool;
 
     private var delta:Float;
 
@@ -71,6 +74,7 @@ class Player extends ActiveEntity
         wasOnGround = false;
         wasOnWall = false;
         lastWallWasRight = false;
+        isBouncing = false;
 
         canMove = false;
         var restartDelay = new Alarm(
@@ -180,6 +184,14 @@ class Player extends ActiveEntity
         if(collide("hazard", x, y) != null) {
             die();
         }
+        var spring = collide("spring", x, y);
+        if(spring != null && !isOnGround() && velocity.y > 0) {
+            cast(spring, Spring).bounce();
+            velocity.y = -SPRING_POWER;
+            canDoubleJump = true;
+            isBouncing = true;
+            scaleY(JUMP_STRETCH);
+        };
     }
 
     private function die() {
@@ -242,6 +254,7 @@ class Player extends ActiveEntity
 
         // Check if the player is jumping or falling
         if(isOnGround()) {
+            isBouncing = false;
             velocity.y = 0;
             canDoubleJump = true;
             if(Input.pressed(Key.Z)) {
@@ -251,6 +264,7 @@ class Player extends ActiveEntity
             }
         }
         else if(isOnWall()) {
+            isBouncing = false;
             if(velocity.y < 0) {
                 velocity.y += gravity;
             }
@@ -275,12 +289,12 @@ class Player extends ActiveEntity
         else {
             velocity.y += gravity;
             if(Input.pressed(Key.Z) && canDoubleJump) {
-                velocity.y = -DOUBLE_JUMP_POWER;
+                velocity.y = Math.min(velocity.y, -DOUBLE_JUMP_POWER);
                 scaleY(DOUBLE_JUMP_STRETCH);
                 makeDustAtFeet();
                 canDoubleJump = false;
             }
-            if(Input.released(Key.Z)) {
+            if(Input.released(Key.Z) && !isBouncing) {
                 velocity.y = Math.max(-JUMP_CANCEL_POWER, velocity.y);
             }
         }
