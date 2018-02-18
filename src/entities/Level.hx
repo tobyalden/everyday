@@ -10,6 +10,7 @@ class Level extends TmxEntity
 
     public static inline var PLAYER = 17;
     public static inline var SPRING = 18;
+    public static inline var FAKE_WALL = 19;
     public static inline var SPIKE_FLOOR = 21;
     public static inline var SPIKE_CEILING = 22;
     public static inline var SPIKE_LEFT_WALL = 23;
@@ -30,6 +31,14 @@ class Level extends TmxEntity
             }
             else if(entity.gid == SPRING) {
                 entities.push(new Spring(entity.x, entity.y - TILE_SIZE));
+            }
+            else if(entity.gid == FAKE_WALL) {
+                entities.push(new FakeWall(
+                    entity.x,
+                    entity.y - entity.height,
+                    entity.width,
+                    entity.height
+                ));
             }
             else if(entity.gid == SPIKE_FLOOR) {
                 entities.push(

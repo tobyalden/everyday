@@ -14,7 +14,7 @@ class GameScene extends Scene
 
     public override function begin()
     {
-        var level:Level = new Level("levels/cave4.tmx");
+        var level:Level = new Level("levels/cave.tmx");
         add(level);
         for (entity in level.entities) {
             add(entity);

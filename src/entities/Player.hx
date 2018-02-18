@@ -59,6 +59,7 @@ class Player extends ActiveEntity
     public function new(x:Float, y:Float)
     {
 	    super(x, y);
+        type = "player";
         sprite = new Spritemap("graphics/player.png", 8, 12);
         sprite.add("idle", [0]);
         sprite.add("run", [1, 2, 3, 2], 10);
