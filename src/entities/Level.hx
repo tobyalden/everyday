@@ -15,6 +15,8 @@ class Level extends TmxEntity
     public static inline var SPIKE_CEILING = 22;
     public static inline var SPIKE_LEFT_WALL = 23;
     public static inline var SPIKE_RIGHT_WALL = 24;
+    public static inline var CANNON_HORIZONTAL = 25;
+    public static inline var CANNON_VERTICAL = 26;
 
     public var entities:Array<Entity>;
 
@@ -58,6 +60,16 @@ class Level extends TmxEntity
             else if(entity.gid == SPIKE_RIGHT_WALL) {
                 entities.push(
                     new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
+                );
+            }
+            else if(entity.gid == CANNON_HORIZONTAL) {
+                entities.push(
+                    new Cannon(entity.x, entity.y - TILE_SIZE, "horizontal")
+                );
+            }
+            else if(entity.gid == CANNON_VERTICAL) {
+                entities.push(
+                    new Cannon(entity.x, entity.y - TILE_SIZE, "vertical")
                 );
             }
         }
