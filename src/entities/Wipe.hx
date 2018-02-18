@@ -26,6 +26,7 @@ class Wipe extends Entity
         }
         sprite.smooth = false;
         graphic = sprite;
+        layer = -100;
     }
 
     public override function update()

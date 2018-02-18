@@ -30,12 +30,12 @@ class ActiveEntity extends Entity
 
     private function isOnGround()
     {
-        return collideTypes(["walls", "cannon"], x, y + 1) != null;
+        return collide("walls", x, y + 1) != null;
     }
 
     private function isOnCeiling()
     {
-        return collideTypes(["walls", "cannon"], x, y - 1) != null;
+        return collide("walls", x, y - 1) != null;
     }
 
     private function isOnWall()
@@ -45,11 +45,11 @@ class ActiveEntity extends Entity
 
     private function isOnRightWall()
     {
-        return collideTypes(["walls", "cannon"], x + 1, y) != null;
+        return collide("walls", x + 1, y) != null;
     }
 
     private function isOnLeftWall()
     {
-        return collideTypes(["walls", "cannon"], x - 1, y) != null;
+        return collide("walls", x - 1, y) != null;
     }
 }

@@ -22,7 +22,8 @@ class Bullet extends ActiveEntity
         sprite.add("explode", [4, 5, 6, 7, 8], 21, false);
         sprite.play(direction);
         setHitbox(8, 8);
-        type = "hazard";
+        type = "bullet";
+        layer = 1;
 
         if(direction == "up") {
             velocity.y = -SPEED;
@@ -52,13 +53,28 @@ class Bullet extends ActiveEntity
 
         moveBy(velocity.x * delta, velocity.y * delta);
 
-        if(collide("walls", x, y) != null)
+        if(
+            collide("walls", x, y) != null &&
+            collide("cannon", x, y) == null
+        )
         {
-            velocity.x = 0;
-            velocity.y = 0;
-            sprite.play("explode");
+            explode();
+        }
+        else {
+            var bullet = collide("bullet", x, y);
+            if(bullet != null && collide("cannon", x, y) == null) {
+                cast(bullet, Bullet).explode();
+                explode();
+            }
         }
         super.update();
+    }
+
+    public function explode() {
+        velocity.x = 0;
+        velocity.y = 0;
+        sprite.play("explode");
+        collidable = false;
     }
 }
 

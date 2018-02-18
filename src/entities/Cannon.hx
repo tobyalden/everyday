@@ -15,8 +15,8 @@ class Cannon extends ActiveEntity
     public function new(x:Float, y:Float, orientation:Int)
     {
         super(x, y);
-        type = "cannon";
         this.orientation = orientation;
+        type = "cannon";
         shootTimer = 0;
         sprite = new Spritemap("graphics/cannon.png", 8, 8);
         sprite.add("horizontal", [0]);
@@ -46,20 +46,12 @@ class Cannon extends ActiveEntity
     private function shoot()
     {
         if(orientation == Level.CANNON_HORIZONTAL) {
-            if(!isOnLeftWall()) {
-                scene.add(new Bullet(x, y, "left"));
-            }
-            if(!isOnRightWall()) {
-                scene.add(new Bullet(x, y, "right"));
-            }
+            scene.add(new Bullet(x, y, "left"));
+            scene.add(new Bullet(x, y, "right"));
         }
         else {
-            if(!isOnCeiling()) {
-                scene.add(new Bullet(x, y, "up"));
-            }
-            if(!isOnGround()) {
-                scene.add(new Bullet(x, y, "down"));
-            }
+            scene.add(new Bullet(x, y, "up"));
+            scene.add(new Bullet(x, y, "down"));
         }
     }
 }

@@ -16,6 +16,7 @@ class GameScene extends Scene
     public override function begin()
     {
         var bg = new Entity(0, 0, new Backdrop("graphics/background.png"));
+        bg.layer = 100;
         add(bg);
 
         var level:Level = new Level("levels/cave4.tmx");

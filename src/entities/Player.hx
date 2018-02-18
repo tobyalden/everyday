@@ -182,7 +182,7 @@ class Player extends ActiveEntity
     }
 
     private function collisions() {
-        if(collide("hazard", x, y) != null) {
+        if(collideTypes(["hazard", "bullet"], x, y) != null) {
             die();
         }
         var spring = collide("spring", x, y);
