@@ -2,6 +2,7 @@ package scenes;
 
 import com.haxepunk.*;
 import com.haxepunk.utils.*;
+import com.haxepunk.graphics.*;
 import entities.*;
 import flash.system.System;
 
@@ -14,6 +15,9 @@ class GameScene extends Scene
 
     public override function begin()
     {
+        var bg = new Entity(0, 0, new Backdrop("graphics/background.png"));
+        add(bg);
+
         var level:Level = new Level("levels/cave4.tmx");
         add(level);
         for (entity in level.entities) {
