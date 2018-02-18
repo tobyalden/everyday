@@ -33,6 +33,6 @@ class FakeWall extends Entity
         isRevealed = true;
         var revealer = new VarTween(TweenType.OneShot);
         addTween(revealer);
-        revealer.tween(sprite, "alpha", 0, 0.6, Ease.expoOut);
+        revealer.tween(sprite, "alpha", 0, 0.5, Ease.expoOut);
     }
 }
