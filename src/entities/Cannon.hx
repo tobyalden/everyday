@@ -7,54 +7,60 @@ import com.haxepunk.*;
 class Cannon extends ActiveEntity
 {
 
-  public static inline var SHOOT_INTERVAL = 100;
+    public static inline var SHOOT_INTERVAL = 60;
 
-  private var orientation:String;
-  private var shootTimer:Int;
+    private var orientation:Int;
+    private var shootTimer:Float;
 
-  public function new(x:Float, y:Float, orientation:String)
-  {
-    super(x, y);
-    type = "walls";
-    this.orientation = orientation;
-    shootTimer = SHOOT_INTERVAL;
-    sprite = new Spritemap("graphics/cannon.png", 32, 32);
-    sprite.add("horizontal", [0]);
-    sprite.add("vertical", [1]);
-    sprite.play(orientation);
-    setHitbox(32, 32);
-    finishInitializing();
-  }
-
-  public override function update()
-  {
-    super.update();
-    shootTimer -= 1;
-    if(shootTimer == 0)
+    public function new(x:Float, y:Float, orientation:Int)
     {
-      shoot();
-      shootTimer = SHOOT_INTERVAL;
+        super(x, y);
+        type = "walls";
+        this.orientation = orientation;
+        shootTimer = 0;
+        sprite = new Spritemap("graphics/cannon.png", 8, 8);
+        sprite.add("horizontal", [0]);
+        sprite.add("vertical", [1]);
+        if(orientation == Level.CANNON_HORIZONTAL) {
+            sprite.play("horizontal");
+        }
+        else {
+            sprite.play("vertical");
+        }
+        setHitbox(8, 8);
+        finishInitializing();
     }
-  }
 
-  private function shoot()
-  {
-    if(orientation == "horizontal") {
-      if(!isOnLeftWall()) {
-        scene.add(new Bullet(x - 32, y, "left"));
-      }
-      if(!isOnRightWall()) {
-        scene.add(new Bullet(x + 32, y, "right"));
-      }
+    public override function update()
+    {
+        var delta = HXP.elapsed * 60;
+        shootTimer += delta;
+        if(shootTimer >= SHOOT_INTERVAL)
+        {
+            shoot();
+            shootTimer -= SHOOT_INTERVAL;
+        }
+        super.update();
     }
-    else if(orientation == "vertical") {
-      if(!isOnCeiling()) {
-        scene.add(new Bullet(x, y - 32, "up"));
-      }
-      if(!isOnGround()) {
-        scene.add(new Bullet(x, y + 32, "down"));
-      }
+
+    private function shoot()
+    {
+        if(orientation == Level.CANNON_HORIZONTAL) {
+            if(!isOnLeftWall()) {
+                scene.add(new Bullet(x - width, y, "left"));
+            }
+            if(!isOnRightWall()) {
+                scene.add(new Bullet(x + width, y, "right"));
+            }
+        }
+        else {
+            if(!isOnCeiling()) {
+                scene.add(new Bullet(x, y - width, "up"));
+            }
+            if(!isOnGround()) {
+                scene.add(new Bullet(x, y + width, "down"));
+            }
+        }
     }
-  }
 }
 

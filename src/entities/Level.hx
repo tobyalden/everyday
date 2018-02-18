@@ -42,34 +42,19 @@ class Level extends TmxEntity
                     entity.height
                 ));
             }
-            else if(entity.gid == SPIKE_FLOOR) {
+            else if(
+                entity.gid >= SPIKE_FLOOR && entity.gid <= SPIKE_RIGHT_WALL
+            ) {
                 entities.push(
                     new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
                 );
             }
-            else if(entity.gid == SPIKE_CEILING) {
+            else if(
+                entity.gid == CANNON_HORIZONTAL ||
+                entity.gid == CANNON_VERTICAL
+            ) {
                 entities.push(
-                    new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
-                );
-            }
-            else if(entity.gid == SPIKE_LEFT_WALL) {
-                entities.push(
-                    new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
-                );
-            }
-            else if(entity.gid == SPIKE_RIGHT_WALL) {
-                entities.push(
-                    new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
-                );
-            }
-            else if(entity.gid == CANNON_HORIZONTAL) {
-                entities.push(
-                    new Cannon(entity.x, entity.y - TILE_SIZE, "horizontal")
-                );
-            }
-            else if(entity.gid == CANNON_VERTICAL) {
-                entities.push(
-                    new Cannon(entity.x, entity.y - TILE_SIZE, "vertical")
+                    new Cannon(entity.x, entity.y - TILE_SIZE, entity.gid)
                 );
             }
         }
