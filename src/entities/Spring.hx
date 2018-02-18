@@ -19,7 +19,9 @@ class Spring extends Entity
         type = "spring";
         sprite = new Image("graphics/spring.png");
         sprite.smooth = false;
-        graphic = sprite;
+        var base = new Image("graphics/springbase.png");
+        base.smooth = false;
+        graphic = new Graphiclist([sprite, base]);
         setHitbox(8, 7, 0, -1);
         isBouncing = false;
     }
