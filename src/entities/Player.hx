@@ -29,6 +29,7 @@ class Player extends ActiveEntity
     public static inline var WALL_STICK_VELOCITY = 1;
 
     public static inline var SPRING_POWER = 4;
+    public static inline var BULLET_BOUNCE_POWER = 3;
 
     // Animation constants
     public static inline var LAND_SQUASH = 0.5;
@@ -182,8 +183,21 @@ class Player extends ActiveEntity
     }
 
     private function collisions() {
-        if(collideTypes(["hazard", "bullet"], x, y) != null) {
+        if(collide("hazard", x, y) != null) {
             die();
+        }
+        var bullet = collide("bullet", x, y);
+        if(bullet != null) {
+            if(bullet.collideRect(bullet.x, bullet.y, x, bottom, width, 0)) {
+                cast(bullet, Bullet).explode();
+                velocity.y = -BULLET_BOUNCE_POWER;
+                canDoubleJump = true;
+                isBouncing = true;
+                scaleY(JUMP_STRETCH);
+            }
+            else {
+                die();
+            }
         }
         var spring = collide("spring", x, y);
         if(spring != null && !isOnGround() && velocity.y > 0) {
