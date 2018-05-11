@@ -6,7 +6,7 @@ import com.haxepunk.*;
 
 class Bullet extends ActiveEntity
 {
-    public static inline var SPEED = 2;
+    public static inline var SPEED = 1.1;
 
     private var direction:String;
 

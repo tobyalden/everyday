@@ -29,7 +29,7 @@ class Player extends ActiveEntity
     public static inline var WALL_STICK_VELOCITY = 1;
 
     public static inline var SPRING_POWER = 4;
-    public static inline var BULLET_BOUNCE_POWER = 3;
+    public static inline var BULLET_BOUNCE_POWER = 2.75;
 
     // Animation constants
     public static inline var LAND_SQUASH = 0.5;
@@ -188,7 +188,7 @@ class Player extends ActiveEntity
         }
         var bullet = collide("bullet", x, y);
         if(bullet != null) {
-            if(bullet.collideRect(bullet.x, bullet.y, x, bottom, width, 0)) {
+            if(bottom < bullet.centerY) {
                 cast(bullet, Bullet).explode();
                 velocity.y = -BULLET_BOUNCE_POWER;
                 canDoubleJump = true;

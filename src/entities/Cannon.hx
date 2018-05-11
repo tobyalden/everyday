@@ -7,7 +7,7 @@ import com.haxepunk.*;
 class Cannon extends ActiveEntity
 {
 
-    public static inline var SHOOT_INTERVAL = 60;
+    public static inline var SHOOT_INTERVAL = 70;
 
     private var orientation:Int;
     private var shootTimer:Float;
@@ -17,7 +17,7 @@ class Cannon extends ActiveEntity
         super(x, y);
         this.orientation = orientation;
         type = "cannon";
-        shootTimer = 0;
+        shootTimer = SHOOT_INTERVAL;
         sprite = new Spritemap("graphics/cannon.png", 8, 8);
         sprite.add("horizontal", [0]);
         sprite.add("vertical", [1]);
@@ -37,8 +37,8 @@ class Cannon extends ActiveEntity
         shootTimer += delta;
         if(shootTimer >= SHOOT_INTERVAL)
         {
-            shoot();
             shootTimer -= SHOOT_INTERVAL;
+            shoot();
         }
         super.update();
     }

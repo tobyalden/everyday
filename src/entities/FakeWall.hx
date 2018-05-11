@@ -20,6 +20,7 @@ class FakeWall extends Entity
         graphic = sprite;
         setHitbox(width, height);
         isRevealed = false;
+        layer = 1;
     }
 
     public override function update() {
