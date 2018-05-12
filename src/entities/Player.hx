@@ -216,8 +216,8 @@ class Player extends ActiveEntity
 
     private function movement() {
         isTurning = (
-            Input.check(Key.LEFT) && velocity.x >= 0 ||
-            Input.check(Key.RIGHT) && velocity.x <= 0
+            Input.check(Key.UP) && velocity.x >= 0 ||
+            Input.check(Key.DOWN) && velocity.x <= 0
         );
 
         // If the player is changing directions or just starting to move,
@@ -249,10 +249,10 @@ class Player extends ActiveEntity
         deccel *= delta;
 
         // Check if the player is moving left or right
-        if(Input.check(Key.LEFT)) {
+        if(Input.check(Key.UP)) {
             velocity.x -= accel * accelMultiplier;
         }
-        else if(Input.check(Key.RIGHT)) {
+        else if(Input.check(Key.DOWN)) {
             velocity.x += accel * accelMultiplier;
         }
         else {

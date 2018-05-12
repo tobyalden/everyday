@@ -19,7 +19,7 @@ class GameScene extends Scene
         bg.layer = 100;
         add(bg);
 
-        var level:Level = new Level("levels/cave4.tmx");
+        var level:Level = new Level("levels/cave.tmx");
         add(level);
         for (entity in level.entities) {
             add(entity);
