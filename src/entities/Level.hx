@@ -31,32 +31,12 @@ class Level extends TmxEntity
             trace(entity.gid);
             if(entity.gid == PLAYER) {
                 entities.push(new Player(entity.x, entity.y - 12));
-                trace("adding player!");
-            }
-            else if(entity.gid == SPRING) {
-                entities.push(new Spring(entity.x, entity.y - TILE_SIZE));
-            }
-            else if(entity.gid == FAKE_WALL) {
-                entities.push(new FakeWall(
-                    entity.x,
-                    entity.y - entity.height,
-                    entity.width,
-                    entity.height
-                ));
             }
             else if(
                 entity.gid >= SPIKE_FLOOR && entity.gid <= SPIKE_RIGHT_WALL
             ) {
                 entities.push(
                     new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
-                );
-            }
-            else if(
-                entity.gid == CANNON_HORIZONTAL ||
-                entity.gid == CANNON_VERTICAL
-            ) {
-                entities.push(
-                    new Cannon(entity.x, entity.y - TILE_SIZE, entity.gid)
                 );
             }
         }

@@ -186,27 +186,6 @@ class Player extends ActiveEntity
         if(collide("hazard", x, y) != null) {
             die();
         }
-        var bullet = collide("bullet", x, y);
-        if(bullet != null) {
-            if(bottom < bullet.centerY) {
-                cast(bullet, Bullet).explode();
-                velocity.y = -BULLET_BOUNCE_POWER;
-                canDoubleJump = true;
-                isBouncing = true;
-                scaleY(JUMP_STRETCH);
-            }
-            else {
-                die();
-            }
-        }
-        var spring = collide("spring", x, y);
-        if(spring != null && !isOnGround() && velocity.y > 0) {
-            cast(spring, Spring).bounce();
-            velocity.y = -SPRING_POWER;
-            canDoubleJump = true;
-            isBouncing = true;
-            scaleY(JUMP_STRETCH);
-        };
     }
 
     private function die() {
