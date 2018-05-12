@@ -6,9 +6,9 @@ import com.haxepunk.tmx.*;
 
 class Level extends TmxEntity
 {
-    public static inline var TILE_SIZE = 8;
+    public static inline var TILE_SIZE = 16;
 
-    public static inline var PLAYER = 17;
+    public static inline var PLAYER = 65;
     public static inline var SPRING = 18;
     public static inline var FAKE_WALL = 19;
     public static inline var SPIKE_FLOOR = 21;
@@ -28,8 +28,10 @@ class Level extends TmxEntity
         loadMask("collision_mask", "walls");
         map = TmxMap.loadFromFile(filename);
         for(entity in map.getObjectGroup("entities").objects) {
+            trace(entity.gid);
             if(entity.gid == PLAYER) {
                 entities.push(new Player(entity.x, entity.y - 12));
+                trace("adding player!");
             }
             else if(entity.gid == SPRING) {
                 entities.push(new Spring(entity.x, entity.y - TILE_SIZE));

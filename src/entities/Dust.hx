@@ -10,7 +10,7 @@ class Dust extends ActiveEntity
     {
         super(x, y);
         if(kind == "ground") {
-            sprite = new Spritemap("graphics/grounddust.png", 8, 4);
+            sprite = new Spritemap("graphics/grounddust.png", 16, 8);
             sprite.add("idle", [0, 1, 2, 3, 4], 16, false);
         }
         else if(kind == "wall") {

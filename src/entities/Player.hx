@@ -61,7 +61,7 @@ class Player extends ActiveEntity
     {
 	    super(x, y);
         type = "player";
-        sprite = new Spritemap("graphics/player.png", 8, 12);
+        sprite = new Spritemap("graphics/player.png", 16, 24);
         sprite.add("idle", [0]);
         sprite.add("run", [1, 2, 3, 2], 10);
         sprite.add("jump", [4]);
@@ -69,7 +69,7 @@ class Player extends ActiveEntity
         sprite.add("skid", [6]);
         sprite.add("die", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 45, false);
         sprite.play("idle");
-        setHitbox(6, 12, -1, 0);
+        setHitbox(12, 24, -2, 0);
 
         isTurning = false;
         canDoubleJump = false;
@@ -124,9 +124,9 @@ class Player extends ActiveEntity
     }
 
     private function makeDustAtFeet() {
-        var dust = new Dust(x, bottom - 4, "ground");
+        var dust = new Dust(x, bottom - 8, "ground");
         if(sprite.flipped) {
-            dust.x += 0.5;
+            dust.x += 1;
         }
         scene.add(dust);
     }
