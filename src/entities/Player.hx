@@ -101,30 +101,9 @@ class Player extends ActiveEntity
         sprite.originY = height - (height / sprite.scaleY);
     }
 
-    private function makeDustOnWall(isLeftWall:Bool, fromSlide:Bool) {
-        var dust:Dust;
-        if(fromSlide) {
-            if(isLeftWall) {
-                dust = new Dust(left, centerY, "slide");
-            }
-            else {
-                dust = new Dust(right, centerY, "slide");
-            }
-        }
-        else {
-            if(isLeftWall) {
-                dust = new Dust(x + 1, centerY - 2, "wall");
-            }
-            else {
-                dust = new Dust(x + width - 3, centerY - 2, "wall");
-                dust.sprite.flipped = true;
-            }
-        }
-        scene.add(dust);
-    }
-
     private function makeDustAtFeet() {
-        var dust = new Dust(x, bottom - 8, "ground");
+        var dust = new Dust(x, bottom);
+        dust.y -= Dust.SPRITE_HEIGHT;
         if(sprite.flipped) {
             dust.x += 1;
         }
@@ -271,12 +250,10 @@ class Player extends ActiveEntity
                 if(isOnLeftWall()) {
                     velocity.x = WALL_JUMP_POWER_X;
                     scaleX(WALL_JUMP_STRETCH_X, false);
-                    makeDustOnWall(true, false);
                 }
                 else {
                     velocity.x = -WALL_JUMP_POWER_X;
                     scaleX(WALL_JUMP_STRETCH_X, true);
-                    makeDustOnWall(false, false);
                 }
             }
         }
@@ -301,23 +278,6 @@ class Player extends ActiveEntity
         velocity.x = Math.min(velocity.x, maxVelocity);
         velocity.x = Math.max(velocity.x, -maxVelocity);
         var maxFallVelocity = MAX_FALL_VELOCITY;
-        if(isOnWall()) {
-            maxFallVelocity = MAX_WALL_VELOCITY;
-            if(velocity.y > 0) {
-                if(
-                    isOnLeftWall() &&
-                    scene.collidePoint("walls", left - 1, top) != null
-                ) {
-                    makeDustOnWall(true, true);
-                }
-                else if(
-                    isOnRightWall() &&
-                    scene.collidePoint("walls", right + 1, top) != null
-                ) {
-                    makeDustOnWall(false, true);
-                }
-            }
-        }
         velocity.y = Math.min(velocity.y, maxFallVelocity);
 
         wasOnGround = isOnGround();

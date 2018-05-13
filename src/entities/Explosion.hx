@@ -11,11 +11,11 @@ class Explosion extends ActiveEntity
     {
 	    super(x, y);
         this.velocity = velocity;
-        sprite = new Spritemap("graphics/explosion.png", 12, 12);
+        sprite = new Spritemap("graphics/explosion.png", 24, 24);
         sprite.add("idle", [0, 1, 2, 3], 4, false);
         sprite.play("idle");
-        sprite.originX = 6;
-        sprite.originY = 6;
+        sprite.originX = 12;
+        sprite.originY = 12;
         finishInitializing();
     }
 

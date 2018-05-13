@@ -9,14 +9,11 @@ class Level extends TmxEntity
     public static inline var TILE_SIZE = 16;
 
     public static inline var PLAYER = 65;
-    public static inline var SPRING = 18;
-    public static inline var FAKE_WALL = 19;
-    public static inline var SPIKE_FLOOR = 21;
-    public static inline var SPIKE_CEILING = 22;
-    public static inline var SPIKE_LEFT_WALL = 23;
-    public static inline var SPIKE_RIGHT_WALL = 24;
-    public static inline var CANNON_HORIZONTAL = 25;
-    public static inline var CANNON_VERTICAL = 26;
+    public static inline var FAKE_WALL = 67;
+    public static inline var SPIKE_FLOOR = 69;
+    public static inline var SPIKE_CEILING = 70;
+    public static inline var SPIKE_LEFT_WALL = 71;
+    public static inline var SPIKE_RIGHT_WALL = 72;
 
     public var entities:Array<Entity>;
 
@@ -28,7 +25,6 @@ class Level extends TmxEntity
         loadMask("collision_mask", "walls");
         map = TmxMap.loadFromFile(filename);
         for(entity in map.getObjectGroup("entities").objects) {
-            trace(entity.gid);
             if(entity.gid == PLAYER) {
                 entities.push(new Player(entity.x, entity.y - 12));
             }
@@ -38,6 +34,9 @@ class Level extends TmxEntity
                 entities.push(
                     new Spike(entity.x, entity.y - TILE_SIZE, entity.gid)
                 );
+            }
+            else {
+                trace('Unknown entity ID in map data: ${entity.gid}');
             }
         }
     }
