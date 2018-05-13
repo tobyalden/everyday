@@ -19,8 +19,8 @@ class Player extends ActiveEntity
 
     // Animation constants
     public static inline var LAND_SQUASH = 0.5;
-    public static inline var SQUASH_RECOVERY = 0.05;
-    public static inline var AIR_SQUASH_RECOVERY = 0.03;
+    public static inline var SQUASH_RECOVERY = 0.003;
+    public static inline var AIR_SQUASH_RECOVERY = 0.0018;
     public static inline var JUMP_STRETCH = 1.5;
 
     public static inline var WIPE_DELAY = 0.5;
