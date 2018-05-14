@@ -27,8 +27,9 @@ class Player extends ActiveEntity
     public static inline var RESTART_DELAY = 0.25;
 
     private var wasOnGround:Bool;
-
     private var isDying:Bool;
+    private var isFlipped:Bool;
+    private var canFlip:Bool;
     private var canMove:Bool;
 
     private var delta:Float;
@@ -46,6 +47,9 @@ class Player extends ActiveEntity
         setHitbox(12, 24, -2, 0);
 
         wasOnGround = false;
+        isDying = false;
+        isFlipped = false;
+        canFlip = false;
         canMove = false;
 
         var restartDelay = new Alarm(
@@ -142,6 +146,11 @@ class Player extends ActiveEntity
     }
 
     private function movement() {
+        if(Input.check(Key.X) && canFlip) {
+            isFlipped = !isFlipped;
+            canFlip = false;
+        }
+
         // Check if the player is moving left or right
         if(Input.check(Key.UP)) {
             velocity.x = -RUN_SPEED;
@@ -154,12 +163,21 @@ class Player extends ActiveEntity
         }
 
         var gravity = GRAVITY * delta;
+        if(isFlipped) {
+            gravity = -gravity;
+        }
 
         // Check if the player is jumping or falling
-        if(isOnGround()) {
+        if(isOnGround() && !isFlipped || isOnCeiling() && isFlipped) {
             velocity.y = 0;
+            canFlip = true;
             if(Input.pressed(Key.Z)) {
-                velocity.y = -JUMP_POWER;
+                if(isFlipped) {
+                    velocity.y = JUMP_POWER;
+                }
+                else {
+                    velocity.y = -JUMP_POWER;
+                }
                 scaleY(JUMP_STRETCH);
                 makeDustAtFeet();
             }
@@ -167,12 +185,22 @@ class Player extends ActiveEntity
         else {
             velocity.y += gravity;
             if(Input.released(Key.Z)) {
-                velocity.y = Math.max(-JUMP_CANCEL_POWER, velocity.y);
+                if(isFlipped) {
+                    velocity.y = Math.min(JUMP_CANCEL_POWER, velocity.y);
+                }
+                else {
+                    velocity.y = Math.max(-JUMP_CANCEL_POWER, velocity.y);
+                }
             }
         }
 
         // Cap the player's velocity
-        velocity.y = Math.min(velocity.y, MAX_FALL_SPEED);
+        if(isFlipped) {
+            velocity.y = Math.max(velocity.y, -MAX_FALL_SPEED);
+        }
+        else {
+            velocity.y = Math.min(velocity.y, MAX_FALL_SPEED);
+        }
 
         wasOnGround = isOnGround();
 
@@ -215,5 +243,9 @@ class Player extends ActiveEntity
         else if(velocity.x > 0) {
             sprite.flipped = false;
         }
+        
+        //if(isFlipped) {
+            //sprite.scaleY = -1;
+        //}
     }
 }
