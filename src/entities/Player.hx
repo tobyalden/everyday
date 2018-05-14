@@ -26,7 +26,7 @@ class Player extends ActiveEntity
     public static inline var WIPE_DELAY = 0.5;
     public static inline var RESTART_DELAY = 0.25;
 
-    private var wasOnGround:Bool;
+    private var wasStanding:Bool;
     private var isDying:Bool;
     private var isFlipped:Bool;
     private var canFlip:Bool;
@@ -46,7 +46,7 @@ class Player extends ActiveEntity
         sprite.play("idle");
         setHitbox(12, 24, -2, 0);
 
-        wasOnGround = false;
+        wasStanding = false;
         isDying = false;
         isFlipped = false;
         canFlip = false;
@@ -83,9 +83,14 @@ class Player extends ActiveEntity
         scene.add(dust);
     }
 
+    private function isStanding() {
+        return isOnGround() && !isFlipped || isOnCeiling() && isFlipped;
+    }
+
     public override function update()
     {
         delta = HXP.elapsed * 1000;
+
         collisions();
         if(!isDying) {
             if(canMove) {
@@ -168,7 +173,7 @@ class Player extends ActiveEntity
         }
 
         // Check if the player is jumping or falling
-        if(isOnGround() && !isFlipped || isOnCeiling() && isFlipped) {
+        if(isStanding()) {
             velocity.y = 0;
             canFlip = true;
             if(Input.pressed(Key.Z)) {
@@ -202,7 +207,7 @@ class Player extends ActiveEntity
             velocity.y = Math.min(velocity.y, MAX_FALL_SPEED);
         }
 
-        wasOnGround = isOnGround();
+        wasStanding = isStanding();
 
         moveBy(velocity.x * delta, velocity.y * delta, "walls");
     }
@@ -211,7 +216,7 @@ class Player extends ActiveEntity
     {
         // Recover if squashed
         var squashRecovery:Float = AIR_SQUASH_RECOVERY;
-        if(isOnGround()) {
+        if(isStanding()) {
             squashRecovery = SQUASH_RECOVERY;
         }
         squashRecovery *= delta;
@@ -222,12 +227,12 @@ class Player extends ActiveEntity
             scaleY(Math.min(sprite.scaleY + squashRecovery, 1));
         }
 
-        if(!wasOnGround && isOnGround()) {
+        if(!wasStanding && isStanding()) {
             scaleY(LAND_SQUASH);
             makeDustAtFeet();
         }
 
-        if(!isOnGround()) {
+        if(!isStanding()) {
             sprite.play("jump");
         }
         else if(velocity.x != 0) {
@@ -243,7 +248,7 @@ class Player extends ActiveEntity
         else if(velocity.x > 0) {
             sprite.flipped = false;
         }
-        
+
         //if(isFlipped) {
             //sprite.scaleY = -1;
         //}
