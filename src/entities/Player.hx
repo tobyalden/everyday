@@ -60,18 +60,20 @@ class Player extends ActiveEntity
 	    finishInitializing();
     }
 
-    private function scaleX(newScaleX:Float, toLeft:Bool) {
-        // Scales sprite horizontally in the specified direction
+    private function scaleX(newScaleX:Float, anchorRight:Bool) {
+        // Scales sprite horizontally, outward from the anchored side
         sprite.scaleX = newScaleX;
-        if(toLeft) {
+        if(anchorRight) {
             sprite.originX = width - (width / sprite.scaleX);
         }
     }
 
-    private function scaleY(newScaleY:Float) {
-        // Scales sprite vertically upwards
+    private function scaleY(newScaleY:Float, anchorBottom:Bool) {
+        // Scales sprite vertically, outward from the anchored side
         sprite.scaleY = newScaleY;
-        sprite.originY = height - (height / sprite.scaleY);
+        if(anchorBottom) {
+            sprite.originY = height - (height / sprite.scaleY);
+        }
     }
 
     private function makeDustAtFeet() {
@@ -183,7 +185,7 @@ class Player extends ActiveEntity
                 else {
                     velocity.y = -JUMP_POWER;
                 }
-                scaleY(JUMP_STRETCH);
+                scaleY(JUMP_STRETCH, !isFlipped);
                 makeDustAtFeet();
             }
         }
@@ -221,14 +223,14 @@ class Player extends ActiveEntity
         }
         squashRecovery *= delta;
         if(sprite.scaleY > 1) {
-            scaleY(Math.max(sprite.scaleY - squashRecovery, 1));
+            scaleY(Math.max(sprite.scaleY - squashRecovery, 1), !isFlipped);
         }
         else if(sprite.scaleY < 1) {
-            scaleY(Math.min(sprite.scaleY + squashRecovery, 1));
+            scaleY(Math.min(sprite.scaleY + squashRecovery, 1), !isFlipped);
         }
 
         if(!wasStanding && isStanding()) {
-            scaleY(LAND_SQUASH);
+            scaleY(LAND_SQUASH, !isFlipped);
             makeDustAtFeet();
         }
 
