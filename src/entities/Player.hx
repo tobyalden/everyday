@@ -8,6 +8,8 @@ import com.haxepunk.tweens.misc.*;
 import flash.geom.Point;
 import flash.system.System;
 
+// Why does game run slower at lower framerates?
+
 class Player extends ActiveEntity
 {
     // Movement constants
@@ -70,6 +72,9 @@ class Player extends ActiveEntity
         if(anchorRight) {
             sprite.originX = width - (width / sprite.scaleX);
         }
+        else {
+            sprite.originX = 0;
+        }
     }
 
     private function scaleY(newScaleY:Float, anchorBottom:Bool) {
@@ -77,6 +82,9 @@ class Player extends ActiveEntity
         sprite.scaleY = newScaleY;
         if(anchorBottom) {
             sprite.originY = height - (height / sprite.scaleY);
+        }
+        else {
+            sprite.originY = 0;
         }
     }
 
@@ -244,14 +252,15 @@ class Player extends ActiveEntity
             makeDustAtFeet();
         }
 
+        var suffix = isFlipped ? "_flipped" : "";
         if(!isStanding()) {
-            sprite.play("jump");
+            sprite.play("jump" + suffix);
         }
         else if(velocity.x != 0) {
-            sprite.play("run");
+            sprite.play("run" + suffix);
         }
         else {
-            sprite.play("idle");
+            sprite.play("idle" + suffix);
         }
 
         if(velocity.x < 0) {
@@ -259,10 +268,6 @@ class Player extends ActiveEntity
         }
         else if(velocity.x > 0) {
             sprite.flipped = false;
-        }
-
-        if(isFlipped) {
-            sprite.play(sprite.currentAnim + "_flipped");
         }
     }
 }
