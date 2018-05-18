@@ -8,7 +8,12 @@ import com.haxepunk.tweens.misc.*;
 import flash.geom.Point;
 import flash.system.System;
 
-// Why does game run slower at lower framerates?
+// Q: Why does game run slower at lower framerates?
+// A: Engine.maxElapsed
+
+// TODO:
+// Save points, moving platforms, spiked moving platforms, lasers, switches,
+// extra flips, interconnected levels, save/load, music, sfx.
 
 class Player extends ActiveEntity
 {
@@ -177,10 +182,10 @@ class Player extends ActiveEntity
         }
 
         // Check if the player is moving left or right
-        if(Input.check(Key.UP)) {
+        if(Input.check(Key.UP) || Input.check(Key.LEFT)) {
             velocity.x = -RUN_SPEED;
         }
-        else if(Input.check(Key.DOWN)) {
+        else if(Input.check(Key.DOWN) || Input.check(Key.RIGHT)) {
             velocity.x = RUN_SPEED;
         }
         else {
@@ -208,6 +213,11 @@ class Player extends ActiveEntity
             }
         }
         else {
+            // See if the player is bonking her head on the ceiling (or floor)
+            if(isFlipped && isOnGround() || !isFlipped && isOnCeiling()) {
+                velocity.y = 0;
+                scaleY(sprite.scaleY, isFlipped);
+            }
             velocity.y += gravity;
             if(Input.released(Key.Z)) {
                 if(isFlipped) {
