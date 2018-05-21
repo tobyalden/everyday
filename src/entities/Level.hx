@@ -9,6 +9,7 @@ class Level extends TmxEntity
     public static inline var TILE_SIZE = 16;
 
     public static inline var PLAYER = 65;
+    public static inline var MOVING_PLATFORM = 66;
     public static inline var FAKE_WALL = 67;
     public static inline var SPIKE_FLOOR = 69;
     public static inline var SPIKE_CEILING = 70;
@@ -27,6 +28,11 @@ class Level extends TmxEntity
         for(entity in map.getObjectGroup("entities").objects) {
             if(entity.gid == PLAYER) {
                 entities.push(new Player(entity.x, entity.y - 12));
+            }
+            else if(entity.gid == MOVING_PLATFORM) {
+                entities.push(new MovingPlatform(
+                    entity.x, entity.y, entity.width, entity.height
+                ));
             }
             else if(
                 entity.gid >= SPIKE_FLOOR && entity.gid <= SPIKE_RIGHT_WALL
