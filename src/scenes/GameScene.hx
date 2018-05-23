@@ -35,20 +35,33 @@ class GameScene extends Scene
         var fastXml = new haxe.xml.Fast(xml.firstElement());
 
         // Add collision mask
-        var walls = new Grid(
-            Std.parseInt(fastXml.node.width.innerData),
-            Std.parseInt(fastXml.node.height.innerData),
-            16, 16
+        var levelWidth = Std.parseInt(fastXml.node.width.innerData);
+        var levelHeight = Std.parseInt(fastXml.node.height.innerData);
+        var mask = new Grid(levelWidth, levelHeight, TILE_SIZE, TILE_SIZE);
+        var graphic = new Tilemap(
+            "graphics/tiles.png", levelWidth, levelHeight, TILE_SIZE, TILE_SIZE
         );
         for (r in fastXml.node.ground.nodes.rect) {
-            walls.setRect(
+            mask.setRect(
+                Std.int(Std.parseInt(r.att.x) / TILE_SIZE),
+                Std.int(Std.parseInt(r.att.y) / TILE_SIZE),
+                Std.int(Std.parseInt(r.att.w) / TILE_SIZE),
+                Std.int(Std.parseInt(r.att.h) / TILE_SIZE)
+            );
+            graphic.setRect(
                 Std.int(Std.parseInt(r.att.x) / TILE_SIZE),
                 Std.int(Std.parseInt(r.att.y) / TILE_SIZE),
                 Std.int(Std.parseInt(r.att.w) / TILE_SIZE),
                 Std.int(Std.parseInt(r.att.h) / TILE_SIZE)
             );
         }
-        addMask(walls, "walls");
+        graphic.loadFromString(
+            mask.saveToString(",", "\n", "0", "1")
+        );
+        graphic.smooth = false;
+        var walls = new Entity(0, 0, graphic, mask);
+        walls.type = "walls";
+        add(walls);
 
         // Add entities
         for (p in fastXml.node.objects.nodes.player) {
