@@ -1,8 +1,8 @@
 package entities;
 
-import com.haxepunk.*;
-import com.haxepunk.utils.*;
-import com.haxepunk.graphics.*;
+import haxepunk.*;
+import haxepunk.utils.*;
+import haxepunk.graphics.*;
 import flash.geom.Point;
 
 class Explosion extends ActiveEntity

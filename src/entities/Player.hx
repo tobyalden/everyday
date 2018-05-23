@@ -1,10 +1,11 @@
 package entities;
 
-import com.haxepunk.*;
-import com.haxepunk.utils.*;
-import com.haxepunk.graphics.*;
-import com.haxepunk.Tween;
-import com.haxepunk.tweens.misc.*;
+import haxepunk.*;
+import haxepunk.input.*;
+import haxepunk.graphics.*;
+import haxepunk.Tween;
+import haxepunk.tweens.misc.*;
+import haxepunk.utils.*;
 import flash.geom.Point;
 import flash.system.System;
 
@@ -44,6 +45,10 @@ class Player extends ActiveEntity
     public function new(x:Float, y:Float)
     {
 	    super(x, y);
+        Key.define("left", [Key.LEFT, Key.LEFT_SQUARE_BRACKET]);
+        Key.define("right", [Key.RIGHT, Key.RIGHT_SQUARE_BRACKET]);
+        Key.define("jump", [Key.Z]);
+        Key.define("flip", [Key.X]);
         type = "player";
         sprite = new Spritemap("graphics/player.png", 16, 24);
         sprite.add("idle", [0]);
@@ -61,12 +66,7 @@ class Player extends ActiveEntity
         isDying = false;
         isFlipped = false;
         canFlip = false;
-        canMove = false;
-
-        var restartDelay = new Alarm(
-            RESTART_DELAY, function(_) { canMove = true; }, TweenType.OneShot
-        );
-        addTween(restartDelay, true);
+        canMove = true;
 
 	    finishInitializing();
     }
@@ -102,7 +102,7 @@ class Player extends ActiveEntity
         else {
             dust.y = bottom - Dust.SPRITE_HEIGHT;
         }
-        if(sprite.flipped) {
+        if(sprite.flipX) {
             dust.x += 1;
         }
         scene.add(dust);
@@ -127,18 +127,9 @@ class Player extends ActiveEntity
             if(sprite.complete && visible) {
                 visible = false;
                 explode();
-                var wipeDelay = new Alarm(
-                    WIPE_DELAY, screenWipe, TweenType.OneShot
-                );
-                addTween(wipeDelay, true);
             }
         }
         super.update();
-    }
-
-    private function screenWipe(_):Void {
-        var wipe = new Wipe(false);
-        scene.add(wipe);
     }
 
     private function explode() {
@@ -176,16 +167,16 @@ class Player extends ActiveEntity
     }
 
     private function movement() {
-        if(Input.check(Key.X) && canFlip) {
+        if(Input.check("flip") && canFlip) {
             isFlipped = !isFlipped;
             canFlip = false;
         }
 
         // Check if the player is moving left or right
-        if(Input.check(Key.UP) || Input.check(Key.LEFT)) {
+        if(Input.check("left")) {
             velocity.x = -RUN_SPEED;
         }
-        else if(Input.check(Key.DOWN) || Input.check(Key.RIGHT)) {
+        else if(Input.check("right")) {
             velocity.x = RUN_SPEED;
         }
         else {
@@ -201,7 +192,7 @@ class Player extends ActiveEntity
         if(isStanding()) {
             velocity.y = 0;
             canFlip = true;
-            if(Input.pressed(Key.Z)) {
+            if(Input.pressed("jump")) {
                 if(isFlipped) {
                     velocity.y = JUMP_POWER;
                 }
@@ -219,7 +210,7 @@ class Player extends ActiveEntity
                 scaleY(sprite.scaleY, isFlipped);
             }
             velocity.y += gravity;
-            if(Input.released(Key.Z)) {
+            if(Input.released("jump")) {
                 if(isFlipped) {
                     velocity.y = Math.min(JUMP_CANCEL_POWER, velocity.y);
                 }
@@ -274,10 +265,10 @@ class Player extends ActiveEntity
         }
 
         if(velocity.x < 0) {
-            sprite.flipped = true;
+            sprite.flipX = true;
         }
         else if(velocity.x > 0) {
-            sprite.flipped = false;
+            sprite.flipX = false;
         }
     }
 }

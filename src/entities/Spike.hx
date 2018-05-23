@@ -1,7 +1,7 @@
 package entities;
 
-import com.haxepunk.*;
-import com.haxepunk.graphics.*;
+import haxepunk.*;
+import haxepunk.graphics.*;
 
 class Spike extends Entity
 {

@@ -1,11 +1,11 @@
 
 package entities;
 
-import com.haxepunk.*;
-import com.haxepunk.utils.*;
-import com.haxepunk.graphics.*;
-import com.haxepunk.Tween;
-import com.haxepunk.tweens.misc.*;
+import haxepunk.*;
+import haxepunk.utils.*;
+import haxepunk.graphics.*;
+import haxepunk.Tween;
+import haxepunk.tweens.misc.*;
 
 class FakeWall extends Entity
 {

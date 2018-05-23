@@ -2,9 +2,9 @@
 package entities;
 
 import flash.geom.Point;
-import com.haxepunk.Entity;
-import com.haxepunk.HXP;
-import com.haxepunk.graphics.Spritemap;
+import haxepunk.Entity;
+import haxepunk.HXP;
+import haxepunk.graphics.Spritemap;
 
 class ActiveEntity extends Entity
 {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="Everyday" package="com.example.app" version="1.0.0" company="" />
+	<meta title="Love Eternal" package="com.example.app" version="1.0.0" company="" />
 
  	<app file="Main" main="Main" path="bin" />
 
@@ -20,7 +20,7 @@
 	<assets path="assets/audio" rename="audio" include="*.mp3" if="flash" />
 	<assets path="assets/audio" rename="audio" include="*.wav|*.ogg" unless="flash" />
 	<assets path="assets/font" rename="font" include="*.ttf" />
-	<assets path="assets/levels" rename="levels" include="*.tmx" />
+	<assets path="assets/levels" rename="levels" include="*.oel" />
 
 	<icon path="assets/HaxePunk.svg" />
 </project>

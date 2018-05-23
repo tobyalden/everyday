@@ -1,8 +1,8 @@
 package entities;
 
-import com.haxepunk.*;
-import com.haxepunk.utils.*;
-import com.haxepunk.graphics.*;
+import haxepunk.*;
+import haxepunk.utils.*;
+import haxepunk.graphics.*;
 import scenes.*;
 
 class Wipe extends Entity
@@ -18,7 +18,7 @@ class Wipe extends Entity
         this.wipeIn = wipeIn;
         sprite = new Image("graphics/wipe.png");
         if(wipeIn) {
-            sprite.flipped = true;
+            sprite.scaleX = -1;
             x = -40;
         }
         else {
@@ -35,7 +35,6 @@ class Wipe extends Entity
             moveBy(WIPE_SPEED, 0);     
         }
         else if (!wipeIn) {
-            HXP.stage.color = 0x000000;
             HXP.scene.removeAll();
             HXP.scene = new GameScene();
         }
