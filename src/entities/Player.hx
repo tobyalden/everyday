@@ -55,10 +55,6 @@ class Player extends ActiveEntity
         sprite.add("run", [1, 2, 3, 2], 10);
         sprite.add("jump", [4]);
         sprite.add("die", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 45, false);
-        sprite.add("idle_flipped", [20]);
-        sprite.add("run_flipped", [21, 22, 23, 22], 10);
-        sprite.add("jump_flipped", [24]);
-        sprite.add("die_flipped", [27, 28, 29, 30, 31, 32, 33, 34, 35, 36], 45, false);
         sprite.play("idle");
         setHitbox(12, 24, -2, 0);
 
