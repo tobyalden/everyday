@@ -253,15 +253,14 @@ class Player extends ActiveEntity
             makeDustAtFeet();
         }
 
-        var suffix = isFlipped ? "_flipped" : "";
         if(!isStanding()) {
-            sprite.play("jump" + suffix);
+            sprite.play("jump");
         }
         else if(velocity.x != 0) {
-            sprite.play("run" + suffix);
+            sprite.play("run");
         }
         else {
-            sprite.play("idle" + suffix);
+            sprite.play("idle");
         }
 
         if(velocity.x < 0) {
@@ -270,5 +269,7 @@ class Player extends ActiveEntity
         else if(velocity.x > 0) {
             sprite.flipX = false;
         }
+
+        sprite.flipY = isFlipped;
     }
 }
