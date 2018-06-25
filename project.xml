@@ -4,9 +4,6 @@
 
  	<app file="Main" main="Main" path="bin" />
 
-	<window fps="60" background="0xDAEFD7" />
-    <!--<window width="320" height="180" resizable="false" unless="mobile" />-->
-    <!--<window width="640" height="360" resizable="true" unless="mobile" />-->
     <window width="640" height="480" resizable="true" unless="mobile" />
 	<window fullscreen="true" if="mobile" />
 	<window orientation="landscape" vsync="true" antialiasing="0" if="cpp" />

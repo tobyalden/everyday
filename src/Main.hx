@@ -1,6 +1,7 @@
 import haxepunk.Engine;
 import haxepunk.HXP;
 import haxepunk.screen.UniformScaleMode;
+import haxepunk.utils.*;
 import scenes.*;
 
 class Main extends Engine
@@ -9,12 +10,10 @@ class Main extends Engine
     {
 #if debug
 #end
+        HXP.fullscreen = true;
+        HXP.screen.scaleMode = new UniformScaleMode(UniformScaleType.Expand);
+        HXP.screen.color = Color.Black;
         HXP.scene = new GameScene();
-        //HXP.fullscreen = true;
-        //HXP.screen.color = 0x000000;
-        HXP.screen.scaleMode = new UniformScaleMode(UniformScaleType.Letterbox, false);
-        //HXP.screen.scaleMode.setBaseSize(640, 480);
-        //HXP.resize(HXP.windowWidth, HXP.windowHeight);
     }
 
     public static function main()

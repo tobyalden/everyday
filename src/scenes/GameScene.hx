@@ -7,11 +7,14 @@ import haxepunk.graphics.*;
 import haxepunk.graphics.tile.*;
 import haxepunk.input.*;
 import haxepunk.masks.*;
+import haxepunk.math.*;
 import haxepunk.utils.*;
 import openfl.Assets;
 
 class GameScene extends Scene
 {
+    public static inline var GAME_WIDTH = 640;
+    public static inline var GAME_HEIGHT = 480;
     public static inline var TILE_SIZE = 16;
 
     public function new()
@@ -21,12 +24,8 @@ class GameScene extends Scene
 
     public override function begin()
     {
+        camera.anchor(new Vector2(GAME_WIDTH/2, GAME_HEIGHT/2));
         Key.define("quit", [Key.ESCAPE]);
-
-        var bg = new Entity(0, 0, new Backdrop("graphics/background.png"));
-        bg.layer = 100;
-        add(bg);
-
         loadLevel("levels/cave.oel");
     }
 
