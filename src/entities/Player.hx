@@ -163,7 +163,7 @@ class Player extends ActiveEntity
     }
 
     private function movement() {
-        if(Input.check("flip") && canFlip) {
+        if(Input.pressed("flip") && canFlip) {
             isFlipped = !isFlipped;
             canFlip = false;
         }
