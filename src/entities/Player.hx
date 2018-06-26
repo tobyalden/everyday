@@ -56,7 +56,7 @@ class Player extends ActiveEntity
         sprite.add("jump", [4]);
         sprite.add("die", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 45, false);
         sprite.play("idle");
-        setHitbox(12, 24, -2, 0);
+        setHitbox(10, 24, -3, 0);
 
         wasStanding = false;
         isDying = false;
