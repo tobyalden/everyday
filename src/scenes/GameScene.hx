@@ -63,8 +63,42 @@ class GameScene extends Scene
         add(walls);
 
         // Add entities
-        for (p in fastXml.node.objects.nodes.player) {
-			add(new Player(Std.parseInt(p.att.x), Std.parseInt(p.att.y)));
+        for (e in fastXml.node.objects.nodes.player) {
+            var player = new Player(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y)
+            );
+			add(player);
+            player.y -= player.height;
+        }
+        for (e in fastXml.node.objects.nodes.floorspikes) {
+            var spike = new Spike(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y),
+                Spike.SPIKE_FLOOR
+            );
+            spike.y -= spike.height;
+            add(spike);
+        }
+        for (e in fastXml.node.objects.nodes.ceilingspikes) {
+            var spike = new Spike(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y),
+                Spike.SPIKE_CEILING
+            );
+            add(spike);
+        }
+        for (e in fastXml.node.objects.nodes.leftwallspikes) {
+            var spike = new Spike(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y),
+                Spike.SPIKE_LEFT_WALL
+            );
+            add(spike);
+        }
+        for (e in fastXml.node.objects.nodes.rightwallspikes) {
+            var spike = new Spike(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y),
+                Spike.SPIKE_RIGHT_WALL
+            );
+            spike.x -= spike.width;
+            add(spike);
         }
     }
 
