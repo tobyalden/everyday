@@ -73,7 +73,7 @@ class GameScene extends Scene
         for (e in fastXml.node.objects.nodes.floorspikes) {
             var spike = new Spike(
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y),
-                Spike.SPIKE_FLOOR
+                Spike.SPIKE_FLOOR, Std.parseInt(e.att.width)
             );
             spike.y -= spike.height;
             add(spike);
@@ -81,21 +81,21 @@ class GameScene extends Scene
         for (e in fastXml.node.objects.nodes.ceilingspikes) {
             var spike = new Spike(
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y),
-                Spike.SPIKE_CEILING
+                Spike.SPIKE_CEILING, Std.parseInt(e.att.width)
             );
             add(spike);
         }
         for (e in fastXml.node.objects.nodes.leftwallspikes) {
             var spike = new Spike(
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y),
-                Spike.SPIKE_LEFT_WALL
+                Spike.SPIKE_LEFT_WALL, Std.parseInt(e.att.height)
             );
             add(spike);
         }
         for (e in fastXml.node.objects.nodes.rightwallspikes) {
             var spike = new Spike(
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y),
-                Spike.SPIKE_RIGHT_WALL
+                Spike.SPIKE_RIGHT_WALL, Std.parseInt(e.att.height)
             );
             spike.x -= spike.width;
             add(spike);
