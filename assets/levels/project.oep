@@ -1,0 +1,106 @@
+<project> 
+	<name>Love</name> 
+	<settings> 
+		<defaultWidth>640</defaultWidth> 
+		<defaultHeight>480</defaultHeight> 
+		<maxWidth>32000</maxWidth> 
+		<maxHeight>24000</maxHeight> 
+		<workingDirectory>../editorgfx</workingDirectory> 
+	</settings> 
+	<tilesets> 
+		<tileset name="foliage" image="foliage.png" tileWidth="16" tileHeight="16"/>
+	</tilesets>
+	<objects>
+		<object name="player" image="player.png" width="16" height="24" limit="1">
+			<values>
+				<boolean name="flipped" default="false"/>
+			</values>
+		</object>
+		<object name="ornament" image="tempstatue.png" width="16" height="16" resizableX="true" resizableY="true"> 
+			<values>
+				<string name="filename" default="tempstatue.png" />
+			</values>	
+		</object>
+		<object name="floorspikes" image="floorspikes.png" width="8" height="8" resizableX="true" tile="true"/> 	
+		<object name="ceilingspikes" image="ceilingspikes.png" width="8" height="8" resizableX="true" tile="true"/> 
+		<object name="leftwallspikes" image="leftwallspikes.png" width="8" height="8" resizableY="true" tile="true"/> 
+		<object name="rightwallspikes" image="rightwallspikes.png" width="8" height="8" resizableY="true" tile="true"/>
+		<object name="checkpoint" image="checkpoint.png" width="16" height="16">
+			<values>
+				<boolean name="flipped" default="false"/>
+			</values>
+		</object>
+		<object name="extraflip" image="extraflip.png" width="16" height="16"/>
+		
+		<object name="switch" image="LEVER FINAL REALLY.png" width="16" height="16">
+			<values>
+				<number name="switchNumber" min="0" max="200" default="1" />
+				<boolean name="flipped" default="false"/>
+			</values>
+		</object>
+		
+		<object name="killswitch" image="killswitch.png" width="16" height="16">
+			<values>
+				<boolean name="flipped" default="false"/>
+			</values>
+		</object>
+		
+		<object name="leftfacinglaser" image="leftfacinglaser.png" width="16" height="16">
+			<values>
+				<number name="switchNumber" min="0" max="200" default="1" />
+				<boolean name="isOn" default="true" />
+			</values>
+		</object>
+		
+		<object name="rightfacinglaser" image="rightfacinglaser.png" width="16" height="16">
+			<values>
+				<number name="switchNumber" min="0" max="200" default="1" />
+				<boolean name="isOn" default="true" />
+			</values>
+		</object>
+		
+		<object name="upwardfacinglaser" image="upwardfacinglaser.png" width="16" height="16">
+			<values>	
+				<number name="switchNumber" min="0" max="200" default="1" />
+				<boolean name="isOn" default="true" />
+			</values>
+		</object>
+			
+		<object name="downwardfacinglaser" image="downwardfacinglaser.png" width="16" height="16">
+			<values>
+				<number name="switchNumber" min="0" max="200" default="1" />
+				<boolean name="isOn" default="true" />
+			</values>
+		</object>
+		
+		<object name="laserbeam" image="key.png" width="4" height="4" resizableX="true" resizableY="true">
+			<values>
+				<number name="switchNumber" min="0" max="200" default="1" />
+				<number name="originX" min="0" max="200" default="1" />
+				<number name="originY" min="0" max="200" default="1" />
+			</values>
+		</object>
+		
+		<object name="platform" image="platform.png" width="8" height="8" resizableX="true" resizableY="true" tile="true">
+			<nodes drawObject="true" limit="10" lineMode="2"/>
+			<values>
+				<number name="switchNumber" min="0" max="200" default="1" />
+				<boolean name="spiked" default="false" />
+			</values>
+		</object>
+		
+		<object name="heartblock" image="statue.png" width="16" height="16"/> 	
+		<object name="theheart" image="key.png" width="16" height="16"/> 	
+		
+		<object name="floorspikes_laser" image="floorspikes.png" width="8" height="8" resizableX="true" tile="true"/> 	
+		<object name="ceilingspikes_laser" image="ceilingspikes.png" width="8" height="8" resizableX="true" tile="true"/> 
+		<object name="leftwallspikes_laser" image="leftwallspikes.png" width="8" height="8" resizableY="true" tile="true"/> 
+		<object name="rightwallspikes_laser" image="rightwallspikes.png" width="8" height="8" resizableY="true" tile="true"/>
+		
+	</objects>
+	<layers> 
+		<grid name="ground" gridSize="16" exportAsObjects="true"/>
+		<tiles name="tiles" gridSize="16"/> 
+		<objects name="objects" gridSize="4"/>
+	</layers> 
+</project>

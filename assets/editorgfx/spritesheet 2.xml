@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<TextureAtlas imagePath="spritesheet.png" width="256" height="256">
+
+	<animation n="prun_right" speed="100" loop="true">
+		<sprite n="prun1" x="16" y="0" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun2" x="32" y="0" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun3" x="48" y="0" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun2" x="32" y="0" w="16" h="24" offsetX="-3"/>
+	</animation>
+	
+	<animation n="prun_left" speed="100" loop="true">
+		<sprite n="prun1l" x="16" y="24" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun2l" x="32" y="24" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun3l" x="48" y="24" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun2l" x="32" y="24" w="16" h="24" offsetX="-3"/>
+	</animation>
+	
+	<animation n="prun_right_flipped" speed="100" loop="true">
+		<sprite n="prun1f" x="16" y="48" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun2f" x="32" y="48" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun3f" x="48" y="48" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun2f" x="32" y="48" w="16" h="24" offsetX="-3"/>
+	</animation>
+	
+	<animation n="prun_left_flipped" speed="100" loop="true">
+		<sprite n="prun1lf" x="16" y="72" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun2lf" x="32" y="72" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun3lf" x="48" y="72" w="16" h="24" offsetX="-3"/>
+		<sprite n="prun2lf" x="32" y="72" w="16" h="24" offsetX="-3"/>
+	</animation>
+		
+	<sprite n="pidle"  x="0" y="0" w="16" h="24" offsetX="-3"/>
+	<sprite n="pjump" x="64" y="0" w="16" h="24" offsetX="-3"/>
+	<sprite n="pidlel" x="0" y="24" w="16" h="24" offsetX="-3"/>
+	<sprite n="pjumpl" x="64" y="24" w="16" h="24" offsetX="-3"/>	
+	<sprite n="pidlef" x="0" y="48" w="16" h="24" offsetX="-3"/>
+	<sprite n="pjumpf" x="64" y="48" w="16" h="24" offsetX="-3"/>
+	<sprite n="pidlelf" x="0" y="72" w="16" h="24" offsetX="-3"/>
+	<sprite n="pjumplf" x="64" y="72" w="16" h="24" offsetX="-3"/>
+		
+	<sprite n="stone" x="80" y="0" w="16" h="16"/>
+	
+	<sprite n="lockblock" x="96" y="16" w="16" h="16"/>
+	<sprite n="key" x="112" y="16" w="16" h="16" offsetX="-3" offsetY="-5"/>
+	
+	<sprite n="extraflip" x="96" y="0" w="16" h="16" drawDepth="-1"/>
+	<sprite n="extraflipempty" x="112" y="0" w="16" h="16" drawDepth="-1"/>
+	
+	<sprite n="rightwallspike" x="80" y="16" w="8" h="8" drawDepth="1"/>
+	<sprite n="floorspike" x="88" y="16" w="8" h="8" drawDepth="1"/>
+	<sprite n="ceilingspike" x="80" y="24" w="8" h="8" drawDepth="1"/>
+	<sprite n="leftwallspike" x="88" y="24" w="8" h="8" drawDepth="1"/>
+	
+	<sprite n="platform" x="80" y="32" w="8" h="8" drawDepth="-1"/>
+	<sprite n="laserbeam" x="88" y="32" w="4" h="4" drawDepth="-1"/>
+	
+	<sprite n="switch_off" x="92" y="32" w="18" h="16" drawDepth="1"/>
+	<sprite n="switch_on" x="110" y="32" w="18" h="16" drawDepth="1"/>
+	<sprite n="switch_off_flipped" x="92" y="48" w="18" h="16" drawDepth="1"/>
+	<sprite n="switch_on_flipped" x="110" y="48" w="18" h="16" drawDepth="1"/>
+	
+	<animation n="checkpoint_idle" speed="100" loop="true">
+		<sprite n="checkpoint1" x="80" y="64" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint2" x="80" y="80" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint3" x="80" y="96" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint4" x="80" y="112" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint5" x="80" y="96" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint6" x="80" y="80" w="16" h="16" drawDepth="1"/>
+	</animation>
+	
+	<animation n="checkpoint_idle_flipped" speed="100" loop="true">
+		<sprite n="checkpoint1" x="80" y="176" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint2" x="80" y="160" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint3" x="80" y="144" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint4" x="80" y="128" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint5" x="80" y="144" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpoint6" x="80" y="160" w="16" h="16" drawDepth="1"/>
+	</animation>
+	
+	<animation n="checkpoint_flash_flipped" speed="80" loop="false">
+		<sprite n="checkpointflash1" x="96" y="176" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpointflash2" x="96" y="160" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpointflash3" x="96" y="144" w="16" h="16" drawDepth="1"/>
+	</animation>
+	
+	<animation n="checkpoint_flash" speed="80" loop="false">
+		<sprite n="checkpointflash1" x="96" y="64" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpointflash2" x="96" y="80" w="16" h="16" drawDepth="1"/>
+		<sprite n="checkpointflash3" x="96" y="96" w="16" h="16" drawDepth="1"/>
+	</animation>
+	
+	<sprite n="rightfacinglaseron" x="128" y="112" w="16" h="16" drawDepth="1"/>
+	<sprite n="rightfacinglaseroff" x="128" y="128" w="16" h="16" drawDepth="1"/>
+	<sprite n="downwardfacinglaseroff" x="128" y="144" w="16" h="16" drawDepth="1"/>
+	<sprite n="upwardfacinglaseroff" x="128" y="160" w="16" h="16" drawDepth="1"/>
+	<sprite n="leftfacinglaseron" x="144" y="112" w="16" h="16" drawDepth="1"/>
+	<sprite n="leftfacinglaseroff" x="144" y="128" w="16" h="16" drawDepth="1"/>
+	<sprite n="downwardfacinglaseron" x="144" y="144" w="16" h="16" drawDepth="1"/>
+	<sprite n="upwardfacinglaseron" x="144" y="160" w="16" h="16" drawDepth="1"/>
+	
+	<sprite n="thelight1" x="160" y="112" w="16" h="16"/>
+	<sprite n="thelight2" x="160" y="128" w="16" h="16"/>
+	<sprite n="thelight3" x="160" y="144" w="16" h="16"/>
+	<sprite n="thelight4" x="160" y="160" w="16" h="16"/>
+	<sprite n="thelight5" x="160" y="176" w="16" h="16"/>
+	
+	<sprite n="horizontallaser" x="128" y="176" w="16" h="16"/>
+	<sprite n="verticallaser" x="144" y="176" w="16" h="16"/>
+	
+	<sprite n="jumptutorial" x="208" y="0" w="48" h="128"/>
+	<sprite n="fliptutorial" x="208" y="128" w="48" h="128"/>
+	<sprite n="jumpfliptutorial" x="256" y="0" w="192" h="112"/>
+	<sprite n="switchtutorial" x="256" y="112" w="48" h="48"/>
+	<sprite n="checkpointtutorial" x="304" y="112" w="48" h="48"/>
+    <sprite n="looparrow" x="352" y="112" w="48" h="48"/>
+    <sprite n="toptorightarrow" x="400" y="112" w="48" h="48"/>
+    <sprite n="bottomtorightarrow" x="448" y="112" w="48" h="48"/>
+    <sprite n="noreturn" x="256" y="160" w="48" h="48" drawDepth="1"/>
+    
+    <sprite n="heartblock" x="112" y="160" w="16" h="16" drawDepth="1"/>
+    <sprite n="heartblock2" x="112" y="176" w="16" h="16" drawDepth="1"/>
+
+	
+</TextureAtlas>

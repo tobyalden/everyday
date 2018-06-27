@@ -100,6 +100,12 @@ class GameScene extends Scene
             spike.x -= spike.width;
             add(spike);
         }
+        for (e in fastXml.node.objects.nodes.extraflip) {
+            var extraFlip = new ExtraFlip(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y)
+            );
+            add(extraFlip);
+        }
     }
 
     public override function update() {

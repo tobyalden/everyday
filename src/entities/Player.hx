@@ -152,6 +152,15 @@ class Player extends ActiveEntity
     }
 
     private function collisions() {
+        var _extraFlip = collide("extraflip", x, y);
+        if(_extraFlip != null) {
+            var extraFlip = cast(_extraFlip, ExtraFlip);
+            if(!canFlip && extraFlip.canUse()) {
+                canFlip = true;
+                extraFlip.use();
+            }
+        }
+
         if(collide("hazard", x, y) != null) {
             die();
         }
@@ -188,6 +197,9 @@ class Player extends ActiveEntity
         if(isStanding()) {
             velocity.y = 0;
             canFlip = true;
+            for(extraFlip in scene.entitiesForType("extraflip")) {
+                cast(extraFlip, ExtraFlip).reset();
+            }
             if(Input.pressed("jump")) {
                 if(isFlipped) {
                     velocity.y = JUMP_POWER;

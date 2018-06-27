@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<sprites>
+	<sprite n="pidle"  x="0" y="0" w="16" h="24" offsetX="-3"/>
+	<sprite n="pjump" x="64" y="0" w="16" h="24" offsetX="-3"/>
+</sprites>
