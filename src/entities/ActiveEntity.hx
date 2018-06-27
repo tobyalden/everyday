@@ -1,20 +1,20 @@
 
 package entities;
 
-import flash.geom.Point;
 import haxepunk.Entity;
 import haxepunk.HXP;
 import haxepunk.graphics.Spritemap;
+import haxepunk.math.*;
 
 class ActiveEntity extends Entity
 {
     private var sprite:Spritemap;
-    private var velocity:Point;
+    private var velocity:Vector2;
 
     public function new(x:Float, y:Float)
     {
         super(x, y);
-        velocity = new Point(0, 0);
+        velocity = new Vector2(0, 0);
     }
 
     public function finishInitializing()

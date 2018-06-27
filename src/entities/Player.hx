@@ -40,8 +40,6 @@ class Player extends ActiveEntity
     private var canFlip:Bool;
     private var canMove:Bool;
 
-    private var delta:Float;
-
     public function new(x:Float, y:Float)
     {
 	    super(x, y);
@@ -110,8 +108,6 @@ class Player extends ActiveEntity
 
     public override function update()
     {
-        delta = HXP.elapsed * 1000;
-
         collisions();
         if(!isDying) {
             if(canMove) {
@@ -188,7 +184,7 @@ class Player extends ActiveEntity
             velocity.x = 0;
         }
 
-        var gravity = GRAVITY * delta;
+        var gravity = GRAVITY * Main.getDelta();
         if(isFlipped) {
             gravity = -gravity;
         }
@@ -238,7 +234,7 @@ class Player extends ActiveEntity
 
         wasStanding = isStanding();
 
-        moveBy(velocity.x * delta, velocity.y * delta, "walls");
+        moveBy(velocity.x * Main.getDelta(), velocity.y * Main.getDelta(), "walls");
     }
 
     private function animation()
@@ -248,7 +244,7 @@ class Player extends ActiveEntity
         if(isStanding()) {
             squashRecovery = SQUASH_RECOVERY;
         }
-        squashRecovery *= delta;
+        squashRecovery *= Main.getDelta();
         if(sprite.scaleY > 1) {
             scaleY(Math.max(sprite.scaleY - squashRecovery, 1), !isFlipped);
         }
