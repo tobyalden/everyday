@@ -12,6 +12,7 @@ class ExtraFlip extends Entity
         super(x, y);
         type = "extraflip";
         graphic = new Image("graphics/extraflip.png");
+        graphic.smooth = false;
         setHitbox(10, 16, -3, 0);
         used = false;
     }

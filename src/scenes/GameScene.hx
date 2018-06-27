@@ -106,6 +106,13 @@ class GameScene extends Scene
             );
             add(extraFlip);
         }
+        for (e in fastXml.node.objects.nodes.platform) {
+            var platform = new Platform(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y),
+                Std.parseInt(e.att.width), Std.parseInt(e.att.height)
+            );
+            add(platform);
+        }
     }
 
     public override function update() {

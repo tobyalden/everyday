@@ -17,9 +17,14 @@
     <floorspikes x="368" y="456" width="256"/>
     <leftwallspikes x="16" y="16" height="200"/>
     <rightwallspikes x="616" y="16" height="136"/>
-    <extraflip x="272" y="172"/>
-    <extraflip x="100" y="280"/>
-    <extraflip x="288" y="328"/>
-    <extraflip x="448" y="96"/>
+    <extraflip x="548" y="368"/>
+    <extraflip x="488" y="348"/>
+    <extraflip x="532" y="416"/>
+    <extraflip x="556" y="308"/>
+    <platform x="76" y="184" width="128" height="104" switchNumber="1" spiked="false">
+      <node x="268" y="184"/>
+      <node x="268" y="304"/>
+      <node x="76" y="308"/>
+    </platform>
   </objects>
 </level>
