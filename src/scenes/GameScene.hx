@@ -107,9 +107,20 @@ class GameScene extends Scene
             add(extraFlip);
         }
         for (e in fastXml.node.objects.nodes.platform) {
+            var nodes = new Array<Vector2>();
+            // Add the platform's initial position to the list of nodes
+            nodes.push(
+                new Vector2(Std.parseInt(e.att.x), Std.parseInt(e.att.y))
+            );
+            // Add the rest of the platform's nodes
+            for(n in e.nodes.node) {
+                nodes.push(
+                    new Vector2(Std.parseInt(n.att.x), Std.parseInt(n.att.y))
+                );
+            }
             var platform = new Platform(
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y),
-                Std.parseInt(e.att.width), Std.parseInt(e.att.height)
+                Std.parseInt(e.att.width), Std.parseInt(e.att.height), nodes
             );
             add(platform);
         }
