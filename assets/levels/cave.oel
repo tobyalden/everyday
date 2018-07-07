@@ -21,10 +21,10 @@
     <extraflip x="488" y="348"/>
     <extraflip x="532" y="416"/>
     <extraflip x="556" y="308"/>
-    <platform x="76" y="184" width="128" height="104" switchNumber="1" spiked="false">
-      <node x="268" y="184"/>
-      <node x="268" y="304"/>
-      <node x="76" y="308"/>
+    <platform x="16" y="224" width="128" height="104" switchNumber="1" spiked="false">
+      <node x="208" y="224"/>
+      <node x="208" y="360"/>
+      <node x="16" y="360"/>
     </platform>
   </objects>
 </level>

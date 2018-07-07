@@ -27,78 +27,23 @@ class Platform extends Entity
         setHitbox(width, height);
         destinationIndex = 1;
         isReversed = false;
-        setVelocityTowardsDestination();
     }
 
     public override function update() {
-        var move = velocity;
-        move.scale(Main.getDelta());
-        trace('velocity ${velocity} move ${move} delta ${delta} destinationIndex ${destinationIndex}');
-        moveByAmount(move);
-        super.update();
-    }
-
-    public function moveByAmount(move:Vector2) {
-        var distanceFromDestination = getDistanceFromDestination();
-
-        /* If the given move would take the platform to or past its
-        destination when applied, set the platform's position to its
-        destination */
-        if(move.length >= distanceFromDestination) {
-            trace("jump");
-            var destination = getCurrentDestination();
-            var snapDistanceX = destination.x - x;
-            //if(platformIsUnderPlayer) {
-                //carryPlayerHorizontally(snapDistanceX);
-            //}
-            x = destination.x;
-            //resolveHorizontalCollisionsWithPlayer(platform);
-
-            var snapDistanceY = destination.y - y;
-            //if(platformIsUnderPlayer) {
-                //carryPlayerVertically(platform, snapDistanceY);
-            //}
-            y = destination.y;
-            //resolveVerticalCollisionsWithPlayer(platform);
-
+        setVelocityTowardsDestination();
+        var moveAmount = new Vector2(
+            velocity.x * Main.getDelta(), velocity.y * Main.getDelta()
+        );
+        while(moveAmount.length >= getDistanceFromDestination()) {
+            var sub = moveAmount;
+            sub.normalize();
+            sub.scale(getDistanceFromDestination());
+            moveAmount.subtract(sub);
+            moveTo(getCurrentDestination().x, getCurrentDestination().y);
             advanceNode();
-
-            /* If the move would have taken the platform past its
-            destination, subtract the distance traveled above when it snapped
-            to the destination from the move, and use what's left over to
-            travel towards its new destination */
-            if(move.length > distanceFromDestination) {
-                var newMove = velocity;
-                newMove.scale(Main.getDelta());
-
-                var distanceTraveled = newMove;
-                distanceTraveled.normalize();
-                distanceTraveled.scale(distanceFromDestination);
-
-                newMove.subtract(distanceTraveled);
-                moveByAmount(newMove);
-            }
-        }
-        // If the move would not take the platform to or past its
-        // destination, apply velocity normally
-        else {
-            trace("applied normally");
-            //if(platformIsUnderPlayer) {
-                //carryPlayerHorizontally(moveVector.X);
-            //}
-            x += move.x;
-            //resolveHorizontalCollisionsWithPlayer(platform);
-
-            //if(platformIsUnderPlayer) {
-                //carryPlayerVertically(platform, move.Y);
-            //}
-            y += move.y;
-            //resolveVerticalCollisionsWithPlayer(platform);
-        }
-    }
-
-    public function getCurrentDestination() {
-        return nodes[destinationIndex];
+        } 
+        moveBy(moveAmount.x, moveAmount.y);
+        super.update();
     }
 
     private function setVelocityTowardsDestination() {
@@ -109,9 +54,17 @@ class Platform extends Entity
         velocity = direction;
     }
 
+    public function getCurrentDestination() {
+        return nodes[destinationIndex];
+    }
+
+    public function getDistanceFromDestination() {
+        var destination = getCurrentDestination();
+        return MathUtil.distance(x, y, destination.x, destination.y);
+    }
+
     public function advanceNode()
     {
-        var oldVelocity = velocity;
         if(isReversed) {
             destinationIndex--;
             if(destinationIndex < 0) {
@@ -126,20 +79,7 @@ class Platform extends Entity
             }
             setVelocityTowardsDestination();
         }
-        if(velocity.x != oldVelocity.x || velocity.y != oldVelocity.y) {
-            // Changed direction sfx
-        }
-    }
-
-    public function getDistanceFromDestination() {
-        var destination = getCurrentDestination();
-        return MathUtil.distance(x, y, destination.x, destination.y);
-    }
-
-    // Reverses the direction and path of the platform
-    public function reverse() {
-        isReversed = !isReversed;
-        advanceNode();
-        // Reverse sfx
     }
 }
+
+
