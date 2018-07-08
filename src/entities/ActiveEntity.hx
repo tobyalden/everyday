@@ -1,4 +1,3 @@
-
 package entities;
 
 import haxepunk.Entity;
@@ -10,6 +9,14 @@ class ActiveEntity extends Entity
 {
     private var sprite:Spritemap;
     private var velocity:Vector2;
+
+    public function getVelocity() {
+        return velocity;
+    }
+
+    public function setVelocity(newVelocity:Vector2) {
+        velocity = newVelocity;
+    }
 
     public function new(x:Float, y:Float)
     {

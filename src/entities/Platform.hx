@@ -21,7 +21,7 @@ class Platform extends Entity
     ) {
         super(x, y);
         this.nodes = nodes;
-        type = "platform";
+        type = "walls";
         graphic = new TiledImage("graphics/platform.png", width, height);
         graphic.smooth = false;
         setHitbox(width, height);
@@ -30,6 +30,15 @@ class Platform extends Entity
     }
 
     public override function update() {
+        var carryingPlayer = false;
+        var _player = scene.getInstance("player");
+        if(_player != null) {
+            var player = cast(_player, Player);
+            carryingPlayer = (
+                player.isFlipped && collideWith(player, x, y + 1) != null
+                || !player.isFlipped && collideWith(player, x, y - 1) != null
+            );
+        }
         setVelocityTowardsDestination();
         var moveAmount = new Vector2(
             velocity.x * Main.getDelta(), velocity.y * Main.getDelta()
@@ -39,11 +48,39 @@ class Platform extends Entity
             sub.normalize();
             sub.scale(getDistanceFromDestination());
             moveAmount.subtract(sub);
+            if(_player != null && carryingPlayer) {
+                carryPlayer(sub);
+            }
             moveTo(getCurrentDestination().x, getCurrentDestination().y);
             advanceNode();
         } 
         moveBy(moveAmount.x, moveAmount.y);
+        if(_player != null && carryingPlayer) {
+            carryPlayer(moveAmount);
+        }
         super.update();
+    }
+
+    private function carryPlayer(carryDistance:Vector2) {
+        var _player = scene.getInstance("player");
+        if(_player != null) {
+            var player = cast(_player, Player);
+            player.x += carryDistance.x;
+            if(player.isFlipped) {
+                player.y = y + height;
+            }
+            else {
+                player.y = y - player.height;
+            }
+            if(
+                velocity.y < 0 && player.isFlipped
+                || velocity.y > 0 && !player.isFlipped
+            ) {
+                player.setVelocity(
+                    new Vector2(player.getVelocity().x, velocity.y)
+                );
+            }
+        }
     }
 
     private function setVelocityTowardsDestination() {

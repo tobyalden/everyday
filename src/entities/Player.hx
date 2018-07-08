@@ -34,9 +34,9 @@ class Player extends ActiveEntity
     public static inline var WIPE_DELAY = 0.5;
     public static inline var RESTART_DELAY = 0.25;
 
+    public var isFlipped(default, null):Bool;
     private var wasStanding:Bool;
     private var isDying:Bool;
-    private var isFlipped:Bool;
     private var canFlip:Bool;
     private var canMove:Bool;
 
@@ -47,6 +47,7 @@ class Player extends ActiveEntity
         Key.define("right", [Key.RIGHT, Key.RIGHT_SQUARE_BRACKET]);
         Key.define("jump", [Key.Z]);
         Key.define("flip", [Key.X]);
+        name = "player";
         type = "player";
         sprite = new Spritemap("graphics/player.png", 16, 24);
         sprite.add("idle", [0]);
