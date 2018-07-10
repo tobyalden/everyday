@@ -27,6 +27,7 @@ class Platform extends Entity
         setHitbox(width, height);
         destinationIndex = 1;
         isReversed = false;
+        setVelocityTowardsDestination();
     }
 
     public override function update() {
@@ -39,20 +40,23 @@ class Platform extends Entity
                 || !player.isFlipped && collideWith(player, x, y - 1) != null
             );
         }
-        setVelocityTowardsDestination();
         var moveAmount = new Vector2(
             velocity.x * Main.getDelta(), velocity.y * Main.getDelta()
         );
+        //trace('moveAmount: ${moveAmount} moveAmount.length: ${moveAmount.length} getDistanceFromDestination(): ${getDistanceFromDestination()} position: (${x}, ${y}) destination: ${getCurrentDestination()}');
         while(moveAmount.length >= getDistanceFromDestination()) {
-            var sub = moveAmount;
-            sub.normalize();
-            sub.scale(getDistanceFromDestination());
+            var destination = getCurrentDestination();
+            var sub = new Vector2(destination.x - x, destination.y - y);
             moveAmount.subtract(sub);
             if(_player != null && carryingPlayer) {
                 carryPlayer(sub);
             }
-            moveTo(getCurrentDestination().x, getCurrentDestination().y);
+            moveTo(destination.x, destination.y);
             advanceNode();
+            var newMoveAmount = new Vector2(velocity.x, velocity.y);
+            newMoveAmount.normalize();
+            newMoveAmount.scale(moveAmount.length);
+            moveAmount = newMoveAmount;
         } 
         moveBy(moveAmount.x, moveAmount.y);
         if(_player != null && carryingPlayer) {
@@ -107,15 +111,14 @@ class Platform extends Entity
             if(destinationIndex < 0) {
                 destinationIndex = nodes.length - 1;
             }
-            setVelocityTowardsDestination();
         }
         else {
             destinationIndex++;
             if(destinationIndex >= nodes.length) {
                 destinationIndex = 0;
             }
-            setVelocityTowardsDestination();
         }
+        setVelocityTowardsDestination();
     }
 }
 
