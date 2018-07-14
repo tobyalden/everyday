@@ -194,7 +194,9 @@ class Player extends ActiveEntity
         if(isStanding()) {
             velocity.y = 0;
             canFlip = true;
-            for(extraFlip in scene.entitiesForType("extraflip")) {
+            var extraFlips = new Array<Entity>();
+            scene.getType("extraflip", extraFlips);
+            for(extraFlip in extraFlips) {
                 cast(extraFlip, ExtraFlip).reset();
             }
             if(Input.pressed("jump")) {
