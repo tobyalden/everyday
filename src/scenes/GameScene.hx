@@ -130,6 +130,15 @@ class GameScene extends Scene
         if(Input.check("quit")) {
             System.exit(0);
         }
+
+        // Ensure player always updates last
+        for(e in _update) {
+            if(e.name == 'player') {
+                _update.remove(e);
+                _update.add(e);
+            }
+        }
+
         super.update();
     }
 }
