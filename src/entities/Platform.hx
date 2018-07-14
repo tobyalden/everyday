@@ -40,36 +40,59 @@ class Platform extends Entity
                 || !player.isFlipped && collideWith(player, x, y - 1) != null
             );
         }
+
         var moveAmount = new Vector2(
             velocity.x * Main.getDelta(), velocity.y * Main.getDelta()
         );
-        //trace('moveAmount: ${moveAmount} moveAmount.length: ${moveAmount.length} getDistanceFromDestination(): ${getDistanceFromDestination()} position: (${x}, ${y}) destination: ${getCurrentDestination()}');
+
         while(moveAmount.length >= getDistanceFromDestination()) {
             var destination = getCurrentDestination();
             var sub = new Vector2(destination.x - x, destination.y - y);
             moveAmount.subtract(sub);
+
+            x += sub.x;
             if(_player != null && carryingPlayer) {
-                carryPlayer(sub);
+                carryPlayerHorizontally(sub);
             }
-            moveTo(destination.x, destination.y);
+
+            y += sub.y;
+            if(_player != null && carryingPlayer) {
+                carryPlayerVertically(sub);
+            }
+
             advanceNode();
             var newMoveAmount = new Vector2(velocity.x, velocity.y);
             newMoveAmount.normalize();
             newMoveAmount.scale(moveAmount.length);
             moveAmount = newMoveAmount;
         } 
-        moveBy(moveAmount.x, moveAmount.y);
+
+        x += moveAmount.x;
         if(_player != null && carryingPlayer) {
-            carryPlayer(moveAmount);
+            carryPlayerHorizontally(moveAmount);
         }
+
+        y += moveAmount.y;
+        if(_player != null && carryingPlayer) {
+            carryPlayerVertically(moveAmount);
+        }
+
         super.update();
     }
 
-    private function carryPlayer(carryDistance:Vector2) {
+    private function carryPlayerHorizontally(carryDistance:Vector2) {
+        // TODO: Refactor using early returns
         var _player = scene.getInstance("player");
         if(_player != null) {
             var player = cast(_player, Player);
             player.x += carryDistance.x;
+        }
+    }
+
+    private function carryPlayerVertically(carryDistance:Vector2) {
+        var _player = scene.getInstance("player");
+        if(_player != null) {
+            var player = cast(_player, Player);
             if(player.isFlipped) {
                 player.y = y + height;
             }
