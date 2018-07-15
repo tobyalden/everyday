@@ -51,13 +51,19 @@ class Platform extends Entity
             moveAmount.subtract(sub);
 
             x += sub.x;
-            if(_player != null && carryingPlayer) {
-                carryPlayerHorizontally(sub);
+            if(_player != null) {
+                if(carryingPlayer) {
+                    carryPlayerHorizontally(moveAmount);
+                }
+                pushPlayerHorizontally(moveAmount);
             }
 
             y += sub.y;
-            if(_player != null && carryingPlayer) {
-                carryPlayerVertically(sub);
+            if(_player != null) {
+                if(carryingPlayer) {
+                    carryPlayerVertically(moveAmount);
+                }
+                pushPlayerVertically(moveAmount);
             }
 
             advanceNode();
@@ -68,24 +74,45 @@ class Platform extends Entity
         } 
 
         x += moveAmount.x;
-        if(_player != null && carryingPlayer) {
-            carryPlayerHorizontally(moveAmount);
+        if(_player != null) {
+            if(carryingPlayer) {
+                carryPlayerHorizontally(moveAmount);
+            }
+            pushPlayerHorizontally(moveAmount);
         }
 
         y += moveAmount.y;
-        if(_player != null && carryingPlayer) {
-            carryPlayerVertically(moveAmount);
+        if(_player != null) {
+            if(carryingPlayer) {
+                carryPlayerVertically(moveAmount);
+            }
+            pushPlayerVertically(moveAmount);
         }
 
         super.update();
     }
 
     private function carryPlayerHorizontally(carryDistance:Vector2) {
-        // TODO: Refactor using early returns
+        // TODO: Refactor using early returns (or something better)
         var _player = scene.getInstance("player");
         if(_player != null) {
             var player = cast(_player, Player);
             player.x += carryDistance.x;
+        }
+    }
+
+    private function pushPlayerHorizontally(pushDirection:Vector2) {
+        var player = scene.getInstance("player");
+        if(player == null) {
+           return;
+        }
+        if(collideWith(player, x, y) != null) {
+            if(pushDirection.x < 0) {
+                player.x = x - player.width + player.originX;
+            }
+            else if(pushDirection.x > 0) {
+                player.x = x + width + player.originX;
+            }
         }
     }
 
@@ -109,6 +136,22 @@ class Platform extends Entity
             }
         }
     }
+
+    private function pushPlayerVertically(pushDirection:Vector2) {
+        var player = scene.getInstance("player");
+        if(player == null) {
+           return;
+        }
+        if(collideWith(player, x, y) != null) {
+            if(velocity.y < 0) {
+                player.y = y - player.height;
+            }
+            else if(velocity.y > 0) {
+                player.y = y + height;
+            }
+        }
+    }
+
 
     private function setVelocityTowardsDestination() {
         var destination = getCurrentDestination();
