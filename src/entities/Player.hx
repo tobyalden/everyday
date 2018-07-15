@@ -122,6 +122,9 @@ class Player extends ActiveEntity
                 explode();
             }
         }
+        if(collide("walls", x, y) != null) {
+            die();
+        }
         super.update();
     }
 
