@@ -53,17 +53,17 @@ class Platform extends Entity
             x += sub.x;
             if(_player != null) {
                 if(carryingPlayer) {
-                    carryPlayerHorizontally(moveAmount);
+                    carryPlayerHorizontally(sub);
                 }
-                pushPlayerHorizontally(moveAmount);
+                pushPlayerHorizontally(sub);
             }
 
             y += sub.y;
             if(_player != null) {
                 if(carryingPlayer) {
-                    carryPlayerVertically(moveAmount);
+                    carryPlayerVertically(sub);
                 }
-                pushPlayerVertically(moveAmount);
+                pushPlayerVertically(sub);
             }
 
             advanceNode();
