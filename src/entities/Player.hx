@@ -213,7 +213,12 @@ class Player extends ActiveEntity
         else {
             // See if the player is bonking her head on the ceiling (or floor)
             if(isFlipped && isOnGround() || !isFlipped && isOnCeiling()) {
-                velocity.y = 0;
+                if(isFlipped) {
+                    velocity.y = Math.min(0, velocity.y);
+                }
+                else {
+                    velocity.y = Math.max(0, velocity.y);
+                }
                 scaleY(sprite.scaleY, isFlipped);
             }
             velocity.y += gravity;
