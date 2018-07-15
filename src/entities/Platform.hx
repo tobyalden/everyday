@@ -97,7 +97,7 @@ class Platform extends Entity
         var _player = scene.getInstance("player");
         if(_player != null) {
             var player = cast(_player, Player);
-            player.x += carryDistance.x;
+            player.moveBy(carryDistance.x, 0, "walls", true);
         }
     }
 
@@ -121,10 +121,10 @@ class Platform extends Entity
         if(_player != null) {
             var player = cast(_player, Player);
             if(player.isFlipped) {
-                player.y = y + height;
+                player.moveTo(player.x, y + height, "walls", true);
             }
             else {
-                player.y = y - player.height;
+                player.moveTo(player.x, y - player.height, "walls", true);
             }
             if(
                 velocity.y < 0 && player.isFlipped
