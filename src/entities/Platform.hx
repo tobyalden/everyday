@@ -35,10 +35,15 @@ class Platform extends Entity
         var _player = scene.getInstance("player");
         if(_player != null) {
             var player = cast(_player, Player);
+            //trace('before ${player.x - x}');
             carryingPlayer = (
                 player.isFlipped && collideWith(player, x, y + 1) != null
                 || !player.isFlipped && collideWith(player, x, y - 1) != null
             );
+            if(carryingPlayer) {
+                player._moveX = _moveX;
+                player._moveY = _moveY;
+            }
         }
 
         var moveAmount = new Vector2(
@@ -50,15 +55,22 @@ class Platform extends Entity
             var sub = new Vector2(destination.x - x, destination.y - y);
             moveAmount.subtract(sub);
 
-            x += sub.x;
+            //x += sub.x;
+            //moveBy(sub.x, 0);
+            _moveX = 0;
+            moveTo(destination.x, y);
             if(_player != null) {
+                _player._moveX = 0;
                 if(carryingPlayer) {
                     carryPlayerHorizontally(sub);
                 }
                 pushPlayerHorizontally(sub);
             }
 
-            y += sub.y;
+            //y += sub.y
+            //moveBy(0, sub.y);
+            moveTo(x, destination.y);
+            _moveY = 0;
             if(_player != null) {
                 if(carryingPlayer) {
                     carryPlayerVertically(sub);
@@ -73,7 +85,8 @@ class Platform extends Entity
             moveAmount = newMoveAmount;
         } 
 
-        x += moveAmount.x;
+        //x += moveAmount.x
+        moveBy(moveAmount.x, 0);
         if(_player != null) {
             if(carryingPlayer) {
                 carryPlayerHorizontally(moveAmount);
@@ -81,12 +94,14 @@ class Platform extends Entity
             pushPlayerHorizontally(moveAmount);
         }
 
-        y += moveAmount.y;
+        //y += moveAmount.y
+        moveBy(0, moveAmount.y);
         if(_player != null) {
             if(carryingPlayer) {
                 carryPlayerVertically(moveAmount);
             }
             pushPlayerVertically(moveAmount);
+            //trace('after ${_player.x - x}\n');
         }
 
         super.update();
@@ -100,12 +115,13 @@ class Platform extends Entity
             var willCollide = player.collide(
                 "walls", player.x + carryDistance.x, player.y
             );
-            if(willCollide != null) {
+            //if(willCollide != null) {
+
                 player.moveBy(carryDistance.x, 0, "walls", true);
-            }
-            else {
-                player.x += carryDistance.x;
-            }
+            //}
+            //else {
+                //player.x += carryDistance.x;
+            //}
         }
     }
 
@@ -116,10 +132,14 @@ class Platform extends Entity
         }
         if(collideWith(player, x, y) != null) {
             if(pushDirection.x < 0) {
-                player.x = x - player.width + player.originX;
+                player._moveX = 0;
+                player.moveTo(x - player.width + player.originX, player.y);
+                //player.x = x - player.width + player.originX;
             }
             else if(pushDirection.x > 0) {
-                player.x = x + width + player.originX;
+                player._moveX = 0;
+                player.moveTo(x + width + player.originX, player.y);
+                //player.x = x + width + player.originX;
             }
         }
     }
@@ -130,21 +150,23 @@ class Platform extends Entity
             var player = cast(_player, Player);
             if(player.isFlipped) {
                 var willCollide = player.collide("walls", player.x, y + height);
-                if(willCollide != null) {
+                //if(willCollide != null) {
+                    player._moveY = 0;
                     player.moveTo(player.x, y + height, "walls", true);
-                }
-                else {
-                    player.y = y + height;
-                }
+                //}
+                //else {
+                    //player.y = y + height;
+                //}
             }
             else {
                 var willCollide = player.collide("walls", player.x, y - player.height);
-                if(willCollide != null) {
+                //if(willCollide != null) {
+                    player._moveY = 0;
                     player.moveTo(player.x, y - player.height, "walls", true);
-                }
-                else {
-                    player.y = y - player.height;
-                }
+                //}
+                //else {
+                    //player.y = y - player.height;
+                //}
             }
             if(
                 velocity.y < 0 && player.isFlipped
@@ -164,10 +186,14 @@ class Platform extends Entity
         }
         if(collideWith(player, x, y) != null) {
             if(velocity.y < 0) {
-                player.y = y - player.height;
+                player._moveY = 0;
+                player.moveTo(player.x, y - player.height);
+                //player.y = y - player.height;
             }
             else if(velocity.y > 0) {
-                player.y = y + height;
+                player._moveY = 0;
+                player.moveTo(player.x, y + height);
+                //player.y = y + height;
             }
         }
     }
