@@ -97,7 +97,15 @@ class Platform extends Entity
         var _player = scene.getInstance("player");
         if(_player != null) {
             var player = cast(_player, Player);
-            player.moveBy(carryDistance.x, 0, "walls", true);
+            var willCollide = player.collide(
+                "walls", player.x + carryDistance.x, player.y
+            );
+            if(willCollide != null) {
+                player.moveBy(carryDistance.x, 0, "walls", true);
+            }
+            else {
+                player.x += carryDistance.x;
+            }
         }
     }
 
@@ -121,10 +129,22 @@ class Platform extends Entity
         if(_player != null) {
             var player = cast(_player, Player);
             if(player.isFlipped) {
-                player.moveTo(player.x, y + height, "walls", true);
+                var willCollide = player.collide("walls", player.x, y + height);
+                if(willCollide != null) {
+                    player.moveTo(player.x, y + height, "walls", true);
+                }
+                else {
+                    player.y = y + height;
+                }
             }
             else {
-                player.moveTo(player.x, y - player.height, "walls", true);
+                var willCollide = player.collide("walls", player.x, y - player.height);
+                if(willCollide != null) {
+                    player.moveTo(player.x, y - player.height, "walls", true);
+                }
+                else {
+                    player.y = y - player.height;
+                }
             }
             if(
                 velocity.y < 0 && player.isFlipped
