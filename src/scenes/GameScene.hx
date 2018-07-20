@@ -111,30 +111,28 @@ class GameScene extends Scene
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y), "left"
             );
             add(laser);
+            add(laser.beam);
         }
         for (e in fastXml.node.objects.nodes.rightfacinglaser) {
             var laser = new Laser(
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y), "right"
             );
             add(laser);
+            add(laser.beam);
         }
         for (e in fastXml.node.objects.nodes.downwardfacinglaser) {
             var laser = new Laser(
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y), "down"
             );
             add(laser);
+            add(laser.beam);
         }
         for (e in fastXml.node.objects.nodes.upwardfacinglaser) {
             var laser = new Laser(
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y), "up"
             );
             add(laser);
-        }
-        for (e in fastXml.node.objects.nodes.leftfacinglaser) {
-            var laser = new Laser(
-                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "left"
-            );
-            add(laser);
+            add(laser.beam);
         }
         for (e in fastXml.node.objects.nodes.platform) {
             var nodes = new Array<Vector2>();

@@ -19,6 +19,7 @@ class Dust extends ActiveEntity
         setHitboxTo(sprite);
         anchor = null;
         anchorPosition = new Vector2();
+        layer = -1;
         finishInitializing();
     }
 
