@@ -95,7 +95,7 @@ class Player extends ActiveEntity
             if(platform != null) {
                 dust.setAnchor(platform);
             }
-            dust.y = top + Dust.SPRITE_HEIGHT;
+            dust.y = top + dust.height;
             dust.sprite.scaleY = -1;
         }
         else {
@@ -103,7 +103,7 @@ class Player extends ActiveEntity
             if(platform != null) {
                 dust.setAnchor(platform);
             }
-            dust.y = bottom - Dust.SPRITE_HEIGHT;
+            dust.y = bottom - dust.height;
         }
         if(sprite.flipX) {
             dust.x += 1;

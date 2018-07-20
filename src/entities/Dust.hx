@@ -7,8 +7,6 @@ import haxepunk.utils.*;
 
 class Dust extends ActiveEntity
 {
-    public static inline var SPRITE_HEIGHT = 8;
-
     private var anchor:Entity;
     private var anchorPosition:Vector2;
 
@@ -17,6 +15,7 @@ class Dust extends ActiveEntity
         sprite = new Spritemap("graphics/grounddust.png", 16, 8);
         sprite.add("idle", [0, 1, 2, 3, 4], 16, false);
         sprite.play("idle");
+        setHitboxTo(sprite);
         anchor = null;
         anchorPosition = new Vector2();
         finishInitializing();

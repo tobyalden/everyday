@@ -25,6 +25,7 @@ class Main extends Engine
     public static function main()
     {
         new Main();
+        //new Main(640, 480, 60, false);
     }
 
     override public function update()
