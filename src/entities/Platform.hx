@@ -105,9 +105,6 @@ class Platform extends Entity
             return;
         }
         var player = cast(_player, Player);
-        var willCollide = player.collide(
-            "walls", player.x + carryDistance.x, player.y
-        );
         player.moveBy(carryDistance.x, 0, "walls", true);
     }
 
@@ -135,12 +132,10 @@ class Platform extends Entity
         }
         var player = cast(_player, Player);
         if(player.isFlipped) {
-            var willCollide = player.collide("walls", player.x, y + height);
             player._moveY = 0;
             player.moveTo(player.x, y + height, "walls", true);
         }
         else {
-            var willCollide = player.collide("walls", player.x, y - player.height);
             player._moveY = 0;
             player.moveTo(player.x, y - player.height, "walls", true);
         }

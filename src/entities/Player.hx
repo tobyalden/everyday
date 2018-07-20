@@ -91,10 +91,18 @@ class Player extends ActiveEntity
     private function makeDustAtFeet() {
         var dust = new Dust(x, bottom);
         if(isFlipped) {
+            var platform = collide("walls", x, y - 1);
+            if(platform != null) {
+                dust.setAnchor(platform);
+            }
             dust.y = top + Dust.SPRITE_HEIGHT;
             dust.sprite.scaleY = -1;
         }
         else {
+            var platform = collide("walls", x, y + 1);
+            if(platform != null) {
+                dust.setAnchor(platform);
+            }
             dust.y = bottom - Dust.SPRITE_HEIGHT;
         }
         if(sprite.flipX) {
