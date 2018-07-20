@@ -7,6 +7,7 @@ import haxepunk.utils.*;
 
 class Dust extends ActiveEntity
 {
+    // TODO: Abstract anchoring up into ActiveEntity
     private var anchor:Entity;
     private var anchorPosition:Vector2;
 

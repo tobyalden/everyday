@@ -106,6 +106,36 @@ class GameScene extends Scene
             );
             add(extraFlip);
         }
+        for (e in fastXml.node.objects.nodes.leftfacinglaser) {
+            var laser = new Laser(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "left"
+            );
+            add(laser);
+        }
+        for (e in fastXml.node.objects.nodes.rightfacinglaser) {
+            var laser = new Laser(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "right"
+            );
+            add(laser);
+        }
+        for (e in fastXml.node.objects.nodes.downwardfacinglaser) {
+            var laser = new Laser(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "down"
+            );
+            add(laser);
+        }
+        for (e in fastXml.node.objects.nodes.upwardfacinglaser) {
+            var laser = new Laser(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "up"
+            );
+            add(laser);
+        }
+        for (e in fastXml.node.objects.nodes.leftfacinglaser) {
+            var laser = new Laser(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "left"
+            );
+            add(laser);
+        }
         for (e in fastXml.node.objects.nodes.platform) {
             var nodes = new Array<Vector2>();
             // Add the platform's initial position to the list of nodes
