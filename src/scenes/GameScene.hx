@@ -159,12 +159,20 @@ class GameScene extends Scene
             System.exit(0);
         }
 
-        // Ensure player always updates last
+        // Ensure players and laser beams always updates last
+        var laserBeams = new Array<Entity>();
         for(e in _update) {
-            if(e.name == 'player') {
+            if(e.name == "player") {
                 _update.remove(e);
                 _update.add(e);
             }
+            if(e.type == "laserbeam") {
+                _update.remove(e);
+                laserBeams.push(e);
+            }
+        }
+        for(laserBeam in laserBeams) {
+            _update.add(laserBeam);
         }
 
         super.update();
