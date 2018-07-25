@@ -8,10 +8,12 @@ import haxepunk.utils.*;
 class LaserBeam extends Entity
 {
     private var laser:Laser;
+    private var isOn:Bool;
 
-    public function new(x:Float, y:Float, laser:Laser) {
+    public function new(x:Float, y:Float, laser:Laser, isOn:Bool) {
         super(x, y);
         this.laser = laser;
+        this.isOn = isOn;
         type = "laserbeam";
         graphic = new ColoredRect(4, 4, 0xFF0000);
         setHitboxTo(graphic);
@@ -44,6 +46,10 @@ class LaserBeam extends Entity
         }
         setHitboxTo(graphic);
         laser.type = "walls";
+
+        collidable = isOn;
+        visible = isOn;
+
         super.update();
     }
 }

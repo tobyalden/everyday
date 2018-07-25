@@ -10,7 +10,7 @@ class Laser extends ActiveEntity
     public var beam(default, null):LaserBeam;
     public var direction(default, null):String;
 
-    public function new(x:Float, y:Float, direction:String) {
+    public function new(x:Float, y:Float, direction:String, isOn:Bool) {
         super(x, y);
         this.direction = direction;
         type = "walls";
@@ -23,7 +23,7 @@ class Laser extends ActiveEntity
         setHitbox(16, 16);
         layer = -2;
 
-        beam = new LaserBeam(centerX - 2, centerY - 2, this);
+        beam = new LaserBeam(centerX - 2, centerY - 2, this, isOn);
 
         finishInitializing();
     }

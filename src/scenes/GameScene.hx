@@ -108,28 +108,32 @@ class GameScene extends Scene
         }
         for (e in fastXml.node.objects.nodes.leftfacinglaser) {
             var laser = new Laser(
-                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "left"
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "left",
+                e.att.isOn == "true"
             );
             add(laser);
             add(laser.beam);
         }
         for (e in fastXml.node.objects.nodes.rightfacinglaser) {
             var laser = new Laser(
-                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "right"
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "right",
+                e.att.isOn == "true"
             );
             add(laser);
             add(laser.beam);
         }
         for (e in fastXml.node.objects.nodes.downwardfacinglaser) {
             var laser = new Laser(
-                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "down"
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "down",
+                e.att.isOn == "true"
             );
             add(laser);
             add(laser.beam);
         }
         for (e in fastXml.node.objects.nodes.upwardfacinglaser) {
             var laser = new Laser(
-                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "up"
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y), "up",
+                e.att.isOn == "true"
             );
             add(laser);
             add(laser.beam);
