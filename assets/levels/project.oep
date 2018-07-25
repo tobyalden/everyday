@@ -32,7 +32,7 @@
 		</object>
 		<object name="extraflip" image="extraflip.png" width="16" height="16"/>
 		
-		<object name="switch" image="LEVER FINAL REALLY.png" width="16" height="16">
+		<object name="lever" image="LEVER FINAL REALLY.png" width="16" height="16">
 			<values>
 				<number name="switchNumber" min="0" max="200" default="1" />
 				<boolean name="flipped" default="false"/>

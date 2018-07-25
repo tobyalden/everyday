@@ -134,6 +134,13 @@ class GameScene extends Scene
             add(laser);
             add(laser.beam);
         }
+        for (e in fastXml.node.objects.nodes.lever) {
+            var lever = new Lever(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y),
+                Std.parseInt(e.att.switchNumber), e.att.flipped == "true"
+            );
+            add(lever);
+        }
         for (e in fastXml.node.objects.nodes.platform) {
             var nodes = new Array<Vector2>();
             // Add the platform's initial position to the list of nodes
