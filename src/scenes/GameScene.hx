@@ -159,7 +159,8 @@ class GameScene extends Scene
             }
             var platform = new Platform(
                 Std.parseInt(e.att.x), Std.parseInt(e.att.y),
-                Std.parseInt(e.att.width), Std.parseInt(e.att.height), nodes
+                Std.parseInt(e.att.width), Std.parseInt(e.att.height), nodes,
+                Std.parseInt(e.att.switchNumber)
             );
             add(platform);
         }

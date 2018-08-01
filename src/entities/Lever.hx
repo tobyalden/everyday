@@ -37,5 +37,14 @@ class Lever extends ActiveEntity
                 laser.toggle();
             }
         }
+
+        var platforms = new Array<Entity>();
+        scene.getClass(Platform, platforms);
+        for(_platform in platforms) {
+            var platform = cast(_platform, Platform);
+            if(leverNumber == platform.leverNumber) {
+                platform.toggle();
+            }
+        }
     }
 }

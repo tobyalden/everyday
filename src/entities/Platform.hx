@@ -9,18 +9,19 @@ class Platform extends Entity
 {
     public static inline var SPEED = 0.12;
 
+    public var leverNumber(default, null):Int;
     private var nodes:Array<Vector2>;
     private var destinationIndex:Int;
     private var velocity:Vector2;
     private var isReversed:Bool;
 
-    private var delta:Float;
-
     public function new(
-        x:Float, y:Float, width:Int, height:Int, nodes:Array<Vector2>
+        x:Float, y:Float, width:Int, height:Int, nodes:Array<Vector2>,
+        leverNumber:Int
     ) {
         super(x, y);
         this.nodes = nodes;
+        this.leverNumber = leverNumber;
         type = "walls";
         graphic = new TiledImage("graphics/platform.png", width, height);
         graphic.smooth = false;
@@ -199,6 +200,11 @@ class Platform extends Entity
             }
         }
         setVelocityTowardsDestination();
+    }
+
+    public function toggle() {
+        isReversed = !isReversed;
+        advanceNode();
     }
 }
 
