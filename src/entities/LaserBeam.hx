@@ -7,8 +7,12 @@ import haxepunk.utils.*;
 
 class LaserBeam extends Entity
 {
+    public var isOn(default, null):Bool;
     private var laser:Laser;
-    private var isOn:Bool;
+
+    public function setIsOn(newIsOn:Bool) {
+        isOn = newIsOn;
+    }
 
     public function new(x:Float, y:Float, laser:Laser, isOn:Bool) {
         super(x, y);

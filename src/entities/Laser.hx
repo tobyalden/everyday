@@ -7,12 +7,16 @@ import haxepunk.utils.*;
 
 class Laser extends ActiveEntity
 {
+    public var leverNumber(default, null):Int;
     public var beam(default, null):LaserBeam;
     public var direction(default, null):String;
 
-    public function new(x:Float, y:Float, direction:String, isOn:Bool) {
+    public function new(
+        x:Float, y:Float, direction:String, isOn:Bool, leverNumber:Int
+    ) {
         super(x, y);
         this.direction = direction;
+        this.leverNumber = leverNumber;
         type = "walls";
         sprite = new Spritemap("graphics/laser.png", 16, 16);
         sprite.add("right", [0]);
@@ -27,4 +31,9 @@ class Laser extends ActiveEntity
 
         finishInitializing();
     }
+
+    public function toggle() {
+        beam.setIsOn(!beam.isOn);
+    }
+
 }

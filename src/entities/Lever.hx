@@ -28,5 +28,14 @@ class Lever extends ActiveEntity
     public function pull() {
         isPulled = !isPulled;
         sprite.play(isPulled ? "pulled" : "unpulled");
+
+        var lasers = new Array<Entity>();
+        scene.getClass(Laser, lasers);
+        for(_laser in lasers) {
+            var laser = cast(_laser, Laser);
+            if(leverNumber == laser.leverNumber) {
+                laser.toggle();
+            }
+        }
     }
 }
