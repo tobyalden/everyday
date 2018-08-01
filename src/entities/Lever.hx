@@ -24,5 +24,9 @@ class Lever extends ActiveEntity
         setHitbox(16, 16);
         finishInitializing();
     }
-}
 
+    public function pull() {
+        isPulled = !isPulled;
+        sprite.play(isPulled ? "pulled" : "unpulled");
+    }
+}

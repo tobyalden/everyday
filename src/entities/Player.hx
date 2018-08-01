@@ -31,9 +31,6 @@ class Player extends ActiveEntity
     public static inline var AIR_SQUASH_RECOVERY = 0.0018;
     public static inline var JUMP_STRETCH = 1.5;
 
-    public static inline var WIPE_DELAY = 0.5;
-    public static inline var RESTART_DELAY = 0.25;
-
     public var isFlipped(default, null):Bool;
     private var wasStanding:Bool;
     private var isDying:Bool;
@@ -47,6 +44,7 @@ class Player extends ActiveEntity
         Key.define("right", [Key.RIGHT, Key.RIGHT_SQUARE_BRACKET]);
         Key.define("jump", [Key.Z]);
         Key.define("flip", [Key.X]);
+        Key.define("interact", [Key.DOWN]);
         name = "player";
         type = "player";
         sprite = new Spritemap("graphics/player.png", 16, 24);
@@ -121,6 +119,7 @@ class Player extends ActiveEntity
         if(!isDying) {
             if(canMove) {
                 movement();
+                interaction();
             }
             animation();
         }
@@ -256,8 +255,17 @@ class Player extends ActiveEntity
         moveBy(velocity.x * Main.getDelta(), velocity.y * Main.getDelta(), "walls");
     }
 
-    private function animation()
-    {
+    private function interaction() {
+        if(Input.pressed("interact") && isStanding()) {
+            var levers = new Array<Entity>();
+            collideInto("lever", x, y, levers);
+            for(lever in levers)  {
+                cast(lever, Lever).pull();
+            }
+        }
+    }
+
+    private function animation() {
         // Recover if squashed
         var squashRecovery:Float = AIR_SQUASH_RECOVERY;
         if(isStanding()) {
