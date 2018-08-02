@@ -11,14 +11,19 @@
   </ground>
   <objects>
     <player x="320" y="360" flipped="false"/>
-    <platform x="144" y="144" width="152" height="120" switchNumber="1" spiked="false">
-      <node x="348" y="144"/>
-      <node x="348" y="288"/>
-      <node x="144" y="288"/>
+    <platform x="188" y="108" width="152" height="120" switchNumber="2" spiked="false">
+      <node x="392" y="108"/>
+      <node x="392" y="252"/>
+      <node x="188" y="252"/>
     </platform>
     <leftfacinglaser x="544" y="172" switchNumber="1" isOn="true"/>
-    <downwardfacinglaser x="424" y="92" switchNumber="1" isOn="true"/>
-    <rightfacinglaser x="88" y="216" switchNumber="1" isOn="true"/>
-    <upwardfacinglaser x="480" y="432" switchNumber="1" isOn="true"/>
+    <downwardfacinglaser x="424" y="92" switchNumber="1" isOn="false"/>
+    <rightfacinglaser x="88" y="216" switchNumber="3" isOn="true"/>
+    <upwardfacinglaser x="480" y="432" switchNumber="2" isOn="true"/>
+    <lever x="180" y="448" switchNumber="2" flipped="false"/>
+    <lever x="208" y="16" switchNumber="1" flipped="true"/>
+    <checkpoint x="252" y="448" flipped="false"/>
+    <checkpoint x="360" y="16" flipped="true"/>
+    <checkpoint x="532" y="448" flipped="false"/>
   </objects>
 </level>

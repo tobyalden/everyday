@@ -22,6 +22,7 @@ class GameScene extends Scene
     private var castle:Map<String, String>;
     private var currentScreenX:Int;
     private var currentScreenY:Int;
+    private var entitiesByScreen:Map<String, Array<Entity>>;
     private var player:Player;
 
     public function new() {
@@ -42,15 +43,19 @@ class GameScene extends Scene
         ];
         currentScreenX = 5;
         currentScreenY = 4;
+        entitiesByScreen = new Map<String, Array<Entity>>();
         player = null;
 
         Key.define("quit", [Key.ESCAPE]);
         loadCurrentScreen();
     }
 
+    private function getCurrentScreenKey() {
+        return '${currentScreenX}, ${currentScreenY}';
+    }
+
     private function loadCurrentScreen() {
-        var screenKey = '${currentScreenX}, ${currentScreenY}';
-        var screenData = 'levels/${castle[screenKey]}.oel';
+        var screenData = 'levels/${castle[getCurrentScreenKey()]}.oel';
         var xml = Xml.parse(Assets.getText(screenData));
         var fastXml = new haxe.xml.Fast(xml.firstElement());
 
@@ -212,6 +217,8 @@ class GameScene extends Scene
             }
             add(entity);
         }
+        entities.remove(player);
+        entitiesByScreen[getCurrentScreenKey()] = entities;
     }
 
     public override function update() {
@@ -223,6 +230,14 @@ class GameScene extends Scene
             currentScreenX * GAME_WIDTH + GAME_WIDTH/2,
             currentScreenY * GAME_HEIGHT + GAME_HEIGHT/2
         ));
+
+        for(screenKey in entitiesByScreen.keys()) {
+            if(screenKey != getCurrentScreenKey()) {
+                for(entity in entitiesByScreen[screenKey]) {
+                    remove(entity);
+                }
+            }
+        }
 
         // Ensure players and laser beams always update last
         var laserBeams = new Array<Entity>();
