@@ -8,6 +8,7 @@ import haxepunk.tweens.misc.*;
 import haxepunk.utils.*;
 import flash.geom.Point;
 import flash.system.System;
+import scenes.GameScene;
 
 // Q: Why does game run slower at lower framerates?
 // A: Engine.maxElapsed
@@ -37,6 +38,9 @@ class Player extends ActiveEntity
     private var canFlip:Bool;
     private var canMove:Bool;
 
+    private var lastCheckpoint:Checkpoint;
+    private var resetTimer:Alarm;
+
     public function new(x:Float, y:Float)
     {
 	    super(x, y);
@@ -60,6 +64,12 @@ class Player extends ActiveEntity
         isFlipped = false;
         canFlip = false;
         canMove = true;
+
+        lastCheckpoint = null;
+
+        resetTimer = new Alarm(1, TweenType.OneShot);
+        resetTimer.onComplete.bind(resetLevel);
+        addTween(resetTimer);
 
 	    finishInitializing();
     }
@@ -126,12 +136,17 @@ class Player extends ActiveEntity
             if(sprite.complete && visible) {
                 visible = false;
                 explode();
+                resetTimer.start();
             }
         }
         if(collide("walls", x, y) != null) {
             die();
         }
         super.update();
+    }
+
+    private function resetLevel() {
+        HXP.scene = new GameScene();
     }
 
     private function explode() {
@@ -167,7 +182,10 @@ class Player extends ActiveEntity
             }
         }
 
-        if(collide("hazard", x, y) != null) {
+        if(
+            collide("hazard", x, y) != null
+            || collide("laserbeam", x, y) != null
+        ) {
             die();
         }
     }
@@ -264,8 +282,10 @@ class Player extends ActiveEntity
 
             var checkpoints = new Array<Entity>();
             collideInto("checkpoint", x, y, checkpoints);
-            for(checkpoint in checkpoints) {
-                cast(checkpoint, Checkpoint).flash();
+            for(_checkpoint in checkpoints) {
+                var checkpoint = cast(_checkpoint, Checkpoint);
+                checkpoint.flash();
+                lastCheckpoint = checkpoint;
             }
         }
     }
