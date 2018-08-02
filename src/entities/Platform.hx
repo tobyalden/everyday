@@ -15,6 +15,14 @@ class Platform extends Entity
     private var velocity:Vector2;
     private var isReversed:Bool;
 
+    public function getNodes() {
+        return nodes;
+    }
+
+    public function setNodes(newNodes:Array<Vector2>) {
+        nodes = newNodes;
+    }
+
     public function new(
         x:Float, y:Float, width:Int, height:Int, nodes:Array<Vector2>,
         leverNumber:Int
@@ -79,7 +87,7 @@ class Platform extends Entity
             newMoveAmount.normalize();
             newMoveAmount.scale(moveAmount.length);
             moveAmount = newMoveAmount;
-        } 
+        }
 
         moveBy(moveAmount.x, 0);
         if(_player != null) {
