@@ -164,6 +164,13 @@ class GameScene extends Scene
             );
             add(platform);
         }
+        for (e in fastXml.node.objects.nodes.checkpoint) {
+            var checkpoint = new Checkpoint(
+                Std.parseInt(e.att.x), Std.parseInt(e.att.y),
+                e.att.flipped == "true"
+            );
+            add(checkpoint);
+        }
     }
 
     public override function update() {

@@ -207,5 +207,3 @@ class Platform extends Entity
         advanceNode();
     }
 }
-
-

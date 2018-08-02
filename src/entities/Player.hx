@@ -13,8 +13,8 @@ import flash.system.System;
 // A: Engine.maxElapsed
 
 // TODO:
-// Save points, moving platforms, spiked moving platforms, lasers, switches,
-// extra flips, interconnected levels, save/load, music, sfx.
+// Save points, attaching things to platforms, interconnected levels,
+// save/load, music, sfx.
 
 class Player extends ActiveEntity
 {
@@ -113,8 +113,7 @@ class Player extends ActiveEntity
         return isOnGround() && !isFlipped || isOnCeiling() && isFlipped;
     }
 
-    public override function update()
-    {
+    public override function update() {
         collisions();
         if(!isDying) {
             if(canMove) {
@@ -261,6 +260,12 @@ class Player extends ActiveEntity
             collideInto("lever", x, y, levers);
             for(lever in levers)  {
                 cast(lever, Lever).pull();
+            }
+
+            var checkpoints = new Array<Entity>();
+            collideInto("checkpoint", x, y, checkpoints);
+            for(checkpoint in checkpoints) {
+                cast(checkpoint, Checkpoint).flash();
             }
         }
     }
