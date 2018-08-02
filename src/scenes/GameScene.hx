@@ -31,17 +31,18 @@ class GameScene extends Scene
 
     public override function begin() {
         castle = [
-            "4, 4" => "lvl1/tempstart",
-            "5, 4" => "lvl1/rundotexe",
-            "6, 4" => "lvl1/distantshore2",
-            "7, 4" => "lvl1/returnal",
-            "8, 4" => "lvl1/departure",
-            "9, 4" => "lvl1/hellothere",
-            "10, 4" => "lvl1/arrival",
-            "11, 4" => "lvl1/voyage",
-            "12, 4" => "lvl1/graduate"
+	        "4, 4" => "lvl1/tempstart",
+			"5, 4" => "lvl1/rundotexe",
+			"6, 4" => "lvl1/distantshore2",
+			"7, 4" => "lvl1/returnal",
+			"8, 4" => "lvl1/departure",
+			"9, 4" => "lvl1/hellothere",
+			"10, 4" => "lvl1/arrival",
+			"11, 4" => "lvl1/voyage",
+			"12, 4" => "lvl1/graduate",
+			"12, 3" => "lvlmisc/seeyoulater", // NO MUSIC
         ];
-        currentScreenX = 5;
+        currentScreenX = 12;
         currentScreenY = 4;
         entitiesByScreen = new Map<String, Array<Entity>>();
         player = null;
@@ -261,6 +262,14 @@ class GameScene extends Scene
         }
         else if(player.centerX >= (currentScreenX + 1) * GAME_WIDTH) {
             currentScreenX += 1;
+            loadCurrentScreen();
+        }
+        else if(player.centerY <= currentScreenY * GAME_HEIGHT) {
+            currentScreenY -= 1;
+            loadCurrentScreen();
+        }
+        else if(player.centerY >= (currentScreenY + 1) * GAME_HEIGHT) {
+            currentScreenY += 1;
             loadCurrentScreen();
         }
 
