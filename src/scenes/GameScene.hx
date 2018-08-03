@@ -4,6 +4,7 @@ import entities.*;
 import flash.system.System;
 import haxepunk.*;
 import haxepunk.graphics.*;
+import haxepunk.graphics.text.*;
 import haxepunk.graphics.tile.*;
 import haxepunk.input.*;
 import haxepunk.masks.*;
@@ -25,13 +26,18 @@ class GameScene extends Scene
     private var entitiesByScreen:Map<String, Array<Entity>>;
     private var player:Player;
 
+    private var buildMode:Bool;
+    private var buildModeUI:Entity;
+    private var cameraAnchor:Vector2;
+    private var lastMouse:Vector2;
+
     public function new() {
         super();
     }
 
     public override function begin() {
         castle = [
-	        "4, 4" => "lvl1/tempstart",
+	        "lvl1/rundotexe4, 4" => "lvl1/tempstart",
 			"5, 4" => "lvl1/rundotexe",
 			"6, 4" => "lvl1/distantshore2",
 			"7, 4" => "lvl1/returnal",
@@ -47,7 +53,17 @@ class GameScene extends Scene
         entitiesByScreen = new Map<String, Array<Entity>>();
         player = null;
 
+        buildMode = false;
+        buildModeUI = new Entity(new Text("BUILD MODE", {size: 24, color: 0xf940bc}));
+        buildModeUI.graphic.scrollX = 0;
+        buildModeUI.graphic.scrollY = 0;
+        buildModeUI.layer = -99;
+        add(buildModeUI);
+
+        lastMouse = new Vector2(Mouse.mouseX, Mouse.mouseY);
+
         Key.define("quit", [Key.ESCAPE]);
+        Key.define("build", [Key.B]);
         loadCurrentScreen();
     }
 
@@ -223,22 +239,44 @@ class GameScene extends Scene
     }
 
     public override function update() {
-        if(Input.check("quit")) {
+        if(Input.pressed("quit")) {
             System.exit(0);
         }
+        if(Input.pressed("build")) {
+            buildMode = !buildMode;
+        }
 
-        camera.anchor(new Vector2(
-            currentScreenX * GAME_WIDTH + GAME_WIDTH/2,
-            currentScreenY * GAME_HEIGHT + GAME_HEIGHT/2
-        ));
+        buildModeUI.visible = buildMode;
+        if(buildMode) {
+            camera.scale += Mouse.mouseWheelDelta * 0.01;
+            camera.scale = Math.max(camera.scale, 0.1);
+            camera.scale = Math.min(camera.scale, 1);
+            if(Mouse.mouseDown) {
+                var cameraShift = new Vector2(
+                    (Mouse.mouseX - lastMouse.x) * (1/camera.scale),
+                    (Mouse.mouseY - lastMouse.y) * (1/camera.scale)
+                );
+                cameraAnchor.subtract(cameraShift);
+            }
+            cast(buildModeUI.graphic, Text).scale = 1/camera.scale;
+        }
+        else {
+            camera.scale = 1;
+            cameraAnchor = new Vector2(
+                currentScreenX * GAME_WIDTH + GAME_WIDTH/2,
+                currentScreenY * GAME_HEIGHT + GAME_HEIGHT/2
+            );
 
-        for(screenKey in entitiesByScreen.keys()) {
-            if(screenKey != getCurrentScreenKey()) {
-                for(entity in entitiesByScreen[screenKey]) {
-                    remove(entity);
+            // Remove offscreen entities
+            for(screenKey in entitiesByScreen.keys()) {
+                if(screenKey != getCurrentScreenKey()) {
+                    for(entity in entitiesByScreen[screenKey]) {
+                        remove(entity);
+                    }
                 }
             }
         }
+        camera.anchor(cameraAnchor);
 
         // Ensure players and laser beams always update last
         var laserBeams = new Array<Entity>();
@@ -274,5 +312,6 @@ class GameScene extends Scene
         }
 
         super.update();
+        lastMouse = new Vector2(Mouse.mouseX, Mouse.mouseY);
     }
 }
