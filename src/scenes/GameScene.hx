@@ -34,7 +34,7 @@ class GameScene extends Scene
 
     public override function begin() {
         castle = [
-	        "lvl1/rundotexe4, 4" => "lvl1/tempstart",
+	        "4, 4" => "lvl1/tempstart",
 			"5, 4" => "lvl1/rundotexe",
 			"6, 4" => "lvl1/distantshore2",
 			"7, 4" => "lvl1/returnal",
@@ -60,12 +60,25 @@ class GameScene extends Scene
         loadCurrentScreen();
     }
 
+    private function getScreenKey(screenX:Int, screenY:Int) {
+        return '${screenX}, ${screenY}';
+    }
+
     private function getCurrentScreenKey() {
-        return '${currentScreenX}, ${currentScreenY}';
+        return getScreenKey(currentScreenX, currentScreenY);
     }
 
     private function loadCurrentScreen() {
-        var screenData = 'levels/${castle[getCurrentScreenKey()]}.oel';
+        loadScreen(currentScreenX, currentScreenY);
+    }
+
+    private function loadScreen(screenX:Int, screenY:Int) {
+        var screenKey = getScreenKey(screenX, screenY);
+        if(!castle.exists(screenKey)) {
+            trace("No screen found at those coordinates");
+            return;
+        }
+        var screenData = 'levels/${castle[screenKey]}.oel';
         var xml = Xml.parse(Assets.getText(screenData));
         var fastXml = new haxe.xml.Fast(xml.firstElement());
 
@@ -214,21 +227,21 @@ class GameScene extends Scene
 
         // Offset entities and add them to the scene
         for(entity in entities) {
-            entity.x += currentScreenX * GAME_WIDTH;
-            entity.y += currentScreenY * GAME_HEIGHT;
+            entity.x += screenX * GAME_WIDTH;
+            entity.y += screenY * GAME_HEIGHT;
             if(Type.getClass(entity) == Platform) {
                 var platform = cast(entity, Platform);
                 var nodes = platform.getNodes();
                 for(node in nodes) {
-                    node.x += currentScreenX * GAME_WIDTH;
-                    node.y += currentScreenY * GAME_HEIGHT;
+                    node.x += screenX * GAME_WIDTH;
+                    node.y += screenY * GAME_HEIGHT;
                 }
                 platform.setNodes(nodes);
             }
             add(entity);
         }
         entities.remove(player);
-        entitiesByScreen[getCurrentScreenKey()] = entities;
+        entitiesByScreen[screenKey] = entities;
     }
 
     public override function update() {
