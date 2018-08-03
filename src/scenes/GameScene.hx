@@ -72,10 +72,14 @@ class GameScene extends Scene
         loadScreen(currentScreenX, currentScreenY);
     }
 
-    private function loadScreen(screenX:Int, screenY:Int) {
+    private function loadScreen(screenX:Int, screenY:Int, wallsOnly:Bool = false) {
         var screenKey = getScreenKey(screenX, screenY);
         if(!castle.exists(screenKey)) {
-            trace("No screen found at those coordinates");
+            trace("No screen with this key found in castle.");
+            return;
+        }
+        if(entitiesByScreen.exists(screenKey)) {
+            trace("Screen already loaded.");
             return;
         }
         var screenData = 'levels/${castle[screenKey]}.oel';
@@ -109,6 +113,14 @@ class GameScene extends Scene
         graphic.smooth = false;
         var walls = new Entity(0, 0, graphic, mask);
         walls.type = "walls";
+
+        if(wallsOnly) {
+            walls.x += screenX * GAME_WIDTH;
+            walls.y += screenY * GAME_HEIGHT;
+            entitiesByScreen[screenKey] = [walls];
+            add(walls);
+            return;
+        }
 
         var entities = new Array<Entity>();
         entities.push(walls);
@@ -250,6 +262,14 @@ class GameScene extends Scene
         }
         if(Input.pressed("build")) {
             buildModeUI.visible = !buildModeUI.visible;
+            if(buildModeUI.visible) {
+                // Load all screens
+                for(screenKey in castle.keys()) {
+                    var screenX = Std.parseInt(screenKey.split(", ")[0]);
+                    var screenY = Std.parseInt(screenKey.split(", ")[1]);
+                    loadScreen(screenX, screenY, true);
+                }
+            }
         }
 
         if(buildModeUI.visible) {
@@ -267,6 +287,7 @@ class GameScene extends Scene
                     for(entity in entitiesByScreen[screenKey]) {
                         remove(entity);
                     }
+                    entitiesByScreen.remove(screenKey);
                 }
             }
         }
