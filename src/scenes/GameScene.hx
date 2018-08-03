@@ -12,8 +12,6 @@ import haxepunk.math.*;
 import haxepunk.utils.*;
 import openfl.Assets;
 
-// TODO: Unload levels
-
 class GameScene extends Scene
 {
     public static inline var GAME_WIDTH = 640;
@@ -26,7 +24,6 @@ class GameScene extends Scene
     private var entitiesByScreen:Map<String, Array<Entity>>;
     private var player:Player;
 
-    private var buildMode:Bool;
     private var buildModeUI:Entity;
     private var cameraAnchor:Vector2;
     private var lastMouse:Vector2;
@@ -53,11 +50,7 @@ class GameScene extends Scene
         entitiesByScreen = new Map<String, Array<Entity>>();
         player = null;
 
-        buildMode = false;
-        buildModeUI = new Entity(new Text("BUILD MODE", {size: 24, color: 0xf940bc}));
-        buildModeUI.graphic.scrollX = 0;
-        buildModeUI.graphic.scrollY = 0;
-        buildModeUI.layer = -99;
+        buildModeUI = new BuildModeUI();
         add(buildModeUI);
 
         lastMouse = new Vector2(Mouse.mouseX, Mouse.mouseY);
@@ -243,22 +236,11 @@ class GameScene extends Scene
             System.exit(0);
         }
         if(Input.pressed("build")) {
-            buildMode = !buildMode;
+            buildModeUI.visible = !buildModeUI.visible;
         }
 
-        buildModeUI.visible = buildMode;
-        if(buildMode) {
-            camera.scale += Mouse.mouseWheelDelta * 0.01;
-            camera.scale = Math.max(camera.scale, 0.1);
-            camera.scale = Math.min(camera.scale, 1);
-            if(Mouse.mouseDown) {
-                var cameraShift = new Vector2(
-                    (Mouse.mouseX - lastMouse.x) * (1/camera.scale),
-                    (Mouse.mouseY - lastMouse.y) * (1/camera.scale)
-                );
-                cameraAnchor.subtract(cameraShift);
-            }
-            cast(buildModeUI.graphic, Text).scale = 1/camera.scale;
+        if(buildModeUI.visible) {
+            buildMode();
         }
         else {
             camera.scale = 1;
@@ -266,7 +248,6 @@ class GameScene extends Scene
                 currentScreenX * GAME_WIDTH + GAME_WIDTH/2,
                 currentScreenY * GAME_HEIGHT + GAME_HEIGHT/2
             );
-
             // Remove offscreen entities
             for(screenKey in entitiesByScreen.keys()) {
                 if(screenKey != getCurrentScreenKey()) {
@@ -276,6 +257,7 @@ class GameScene extends Scene
                 }
             }
         }
+
         camera.anchor(cameraAnchor);
 
         // Ensure players and laser beams always update last
@@ -313,5 +295,19 @@ class GameScene extends Scene
 
         super.update();
         lastMouse = new Vector2(Mouse.mouseX, Mouse.mouseY);
+    }
+
+    private function buildMode() {
+        camera.scale += Mouse.mouseWheelDelta * 0.01;
+        camera.scale = Math.max(camera.scale, 0.1);
+        camera.scale = Math.min(camera.scale, 1);
+        if(Mouse.mouseDown) {
+            var cameraShift = new Vector2(
+                (Mouse.mouseX - lastMouse.x) * (1/camera.scale),
+                (Mouse.mouseY - lastMouse.y) * (1/camera.scale)
+            );
+            cameraAnchor.subtract(cameraShift);
+        }
+        cast(buildModeUI.graphic, Text).scale = 1/camera.scale;
     }
 }
