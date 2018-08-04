@@ -6,13 +6,16 @@ import flash.net.FileFilter;
 import haxepunk.*;
 import haxepunk.graphics.*;
 import haxepunk.graphics.text.*;
+import haxepunk.graphics.tile.*;
 import haxepunk.input.*;
+import openfl.Assets;
 import scenes.GameScene;
 
 class BuildModeUI extends Entity
 {
-    public var segmentToPlace:Graphic;
     private var onIndicator:Text;
+    public var screenPlacer:Graphiclist;
+    public var screenPath(default, null):String;
     private var fileRef:FileReference;
 
     public function new()
@@ -25,10 +28,12 @@ class BuildModeUI extends Entity
         graphic.scrollX = 0;
         graphic.scrollY = 0;
         Key.define("load", [Key.L]);
-        segmentToPlace = new ColoredRect(
-            GameScene.GAME_WIDTH, GameScene.GAME_HEIGHT, 0xff0000, 0.5
-        );
-        addGraphic(segmentToPlace);
+        screenPlacer = new Graphiclist();
+        screenPlacer.add(new ColoredRect(
+            GameScene.GAME_WIDTH, GameScene.GAME_HEIGHT, 0x00ff00, 0.5
+        ));
+        addGraphic(screenPlacer);
+        screenPath = null;
     }
 
     override public function update() {
@@ -58,13 +63,37 @@ class BuildModeUI extends Entity
         findScreen(levelDir, fileRef.name);
     }
 
+    private function loadScreenToPlace() {
+        var xml = Xml.parse(Assets.getText("levels/" + screenPath));
+        var fastXml = new haxe.xml.Fast(xml.firstElement());
+        var screenWidth = Std.parseInt(fastXml.node.width.innerData);
+        var screenHeight = Std.parseInt(fastXml.node.height.innerData);
+        var screenPreview = new Tilemap(
+            "graphics/debugtiles.png", screenWidth, screenHeight,
+            GameScene.TILE_SIZE, GameScene.TILE_SIZE
+        );
+        for (r in fastXml.node.ground.nodes.rect) {
+            screenPreview.setRect(
+                Std.int(Std.parseInt(r.att.x) / GameScene.TILE_SIZE),
+                Std.int(Std.parseInt(r.att.y) / GameScene.TILE_SIZE),
+                Std.int(Std.parseInt(r.att.w) / GameScene.TILE_SIZE),
+                Std.int(Std.parseInt(r.att.h) / GameScene.TILE_SIZE)
+            );
+        }
+        screenPreview.smooth = false;
+        screenPreview.alpha = 0.5;
+        screenPlacer.removeAll();
+        screenPlacer.add(screenPreview);
+    }
+
     private function findScreen(directory:String, name:String) {
         if(sys.FileSystem.exists(directory)) {
             for(file in sys.FileSystem.readDirectory(directory)) {
                 var path = haxe.io.Path.join([directory, file]);
                 if(!sys.FileSystem.isDirectory(path)) {
                     if(file == name) {
-                        trace("file found: " + path);
+                        screenPath = path.split("levels/")[1];
+                        loadScreenToPlace();
                     }
                     // do something with file
                 }

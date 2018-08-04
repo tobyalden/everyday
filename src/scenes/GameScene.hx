@@ -34,16 +34,16 @@ class GameScene extends Scene
 
     public override function begin() {
         castle = [
-	        "4, 4" => "lvl1/tempstart",
-			"5, 4" => "lvl1/rundotexe",
-			"6, 4" => "lvl1/distantshore2",
-			"7, 4" => "lvl1/returnal",
-			"8, 4" => "lvl1/departure",
-			"9, 4" => "lvl1/hellothere",
-			"10, 4" => "lvl1/arrival",
-			"11, 4" => "lvl1/voyage",
-			"12, 4" => "lvl1/graduate",
-			"12, 3" => "lvlmisc/seeyoulater", // NO MUSIC
+	        "4, 4" => "lvl1/tempstart.oel",
+			"5, 4" => "lvl1/rundotexe.oel",
+			"6, 4" => "lvl1/distantshore2.oel",
+			"7, 4" => "lvl1/returnal.oel",
+			"8, 4" => "lvl1/departure.oel",
+			"9, 4" => "lvl1/hellothere.oel",
+			"10, 4" => "lvl1/arrival.oel",
+			"11, 4" => "lvl1/voyage.oel",
+			"12, 4" => "lvl1/graduate.oel",
+			"12, 3" => "lvlmisc/seeyoulater.oel", // NO MUSIC
         ];
         currentScreenX = 12;
         currentScreenY = 4;
@@ -82,7 +82,7 @@ class GameScene extends Scene
             trace("Screen already loaded.");
             return;
         }
-        var screenData = 'levels/${castle[screenKey]}.oel';
+        var screenData = 'levels/${castle[screenKey]}';
         var xml = Xml.parse(Assets.getText(screenData));
         var fastXml = new haxe.xml.Fast(xml.firstElement());
 
@@ -91,16 +91,11 @@ class GameScene extends Scene
         var screenHeight = Std.parseInt(fastXml.node.height.innerData);
         var mask = new Grid(screenWidth, screenHeight, TILE_SIZE, TILE_SIZE);
         var graphic = new Tilemap(
-            "graphics/tiles.png", screenWidth, screenHeight, TILE_SIZE, TILE_SIZE
+            "graphics/tiles.png", screenWidth, screenHeight,
+            TILE_SIZE, TILE_SIZE
         );
         for (r in fastXml.node.ground.nodes.rect) {
             mask.setRect(
-                Std.int(Std.parseInt(r.att.x) / TILE_SIZE),
-                Std.int(Std.parseInt(r.att.y) / TILE_SIZE),
-                Std.int(Std.parseInt(r.att.w) / TILE_SIZE),
-                Std.int(Std.parseInt(r.att.h) / TILE_SIZE)
-            );
-            graphic.setRect(
                 Std.int(Std.parseInt(r.att.x) / TILE_SIZE),
                 Std.int(Std.parseInt(r.att.y) / TILE_SIZE),
                 Std.int(Std.parseInt(r.att.w) / TILE_SIZE),
@@ -256,6 +251,14 @@ class GameScene extends Scene
         entitiesByScreen[screenKey] = entities;
     }
 
+    public function loadAllScreens() {
+        for(screenKey in castle.keys()) {
+            var screenX = Std.parseInt(screenKey.split(", ")[0]);
+            var screenY = Std.parseInt(screenKey.split(", ")[1]);
+            loadScreen(screenX, screenY, true);
+        }
+    }
+
     public override function update() {
         if(Input.pressed("quit")) {
             System.exit(0);
@@ -263,12 +266,7 @@ class GameScene extends Scene
         if(Input.pressed("build")) {
             buildModeUI.visible = !buildModeUI.visible;
             if(buildModeUI.visible) {
-                // Load all screens
-                for(screenKey in castle.keys()) {
-                    var screenX = Std.parseInt(screenKey.split(", ")[0]);
-                    var screenY = Std.parseInt(screenKey.split(", ")[1]);
-                    loadScreen(screenX, screenY, true);
-                }
+                loadAllScreens();
             }
         }
 
@@ -343,17 +341,23 @@ class GameScene extends Scene
             cameraAnchor.subtract(cameraShift);
         }
         buildModeUI.setScale(1/camera.scale);
-        buildModeUI.segmentToPlace.x = (
+        buildModeUI.screenPlacer.x = (
             Math.round(
                 (camera.x + Mouse.mouseX * (1/camera.scale) - GAME_WIDTH/2)
                 / GAME_WIDTH
             ) * GAME_WIDTH
         );
-        buildModeUI.segmentToPlace.y = (
+        buildModeUI.screenPlacer.y = (
             Math.round(
                 (camera.y + Mouse.mouseY * (1/camera.scale) - GAME_HEIGHT/2)
                 / GAME_HEIGHT
             ) * GAME_HEIGHT
         );
+        if(Mouse.rightMousePressed && buildModeUI.screenPath != null) {
+            var screenX = Std.int(buildModeUI.screenPlacer.x / GAME_WIDTH);
+            var screenY = Std.int(buildModeUI.screenPlacer.y / GAME_HEIGHT);
+            castle.set(getScreenKey(screenX, screenY), buildModeUI.screenPath);
+            loadScreen(screenX, screenY);
+        }
     }
 }
