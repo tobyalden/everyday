@@ -7,9 +7,11 @@ import haxepunk.*;
 import haxepunk.graphics.*;
 import haxepunk.graphics.text.*;
 import haxepunk.input.*;
+import scenes.GameScene;
 
 class BuildModeUI extends Entity
 {
+    public var segmentToPlace:Graphic;
     private var onIndicator:Text;
     private var fileRef:FileReference;
 
@@ -23,6 +25,10 @@ class BuildModeUI extends Entity
         graphic.scrollX = 0;
         graphic.scrollY = 0;
         Key.define("load", [Key.L]);
+        segmentToPlace = new ColoredRect(
+            GameScene.GAME_WIDTH, GameScene.GAME_HEIGHT, 0xff0000, 0.5
+        );
+        addGraphic(segmentToPlace);
     }
 
     override public function update() {
@@ -34,6 +40,10 @@ class BuildModeUI extends Entity
             pickScreen();
         }
         super.update();
+    }
+
+    public function setScale(newScale:Float) {
+        onIndicator.scale = newScale;
     }
 
     private function pickScreen() {

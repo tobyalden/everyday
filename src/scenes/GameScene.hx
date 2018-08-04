@@ -24,7 +24,7 @@ class GameScene extends Scene
     private var entitiesByScreen:Map<String, Array<Entity>>;
     private var player:Player;
 
-    private var buildModeUI:Entity;
+    private var buildModeUI:BuildModeUI;
     private var cameraAnchor:Vector2;
     private var lastMouse:Vector2;
 
@@ -342,6 +342,18 @@ class GameScene extends Scene
             );
             cameraAnchor.subtract(cameraShift);
         }
-        cast(buildModeUI.graphic, Text).scale = 1/camera.scale;
+        buildModeUI.setScale(1/camera.scale);
+        buildModeUI.segmentToPlace.x = (
+            Math.round(
+                (camera.x + Mouse.mouseX * (1/camera.scale) - GAME_WIDTH/2)
+                / GAME_WIDTH
+            ) * GAME_WIDTH
+        );
+        buildModeUI.segmentToPlace.y = (
+            Math.round(
+                (camera.y + Mouse.mouseY * (1/camera.scale) - GAME_HEIGHT/2)
+                / GAME_HEIGHT
+            ) * GAME_HEIGHT
+        );
     }
 }
