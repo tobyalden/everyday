@@ -13,9 +13,7 @@ import scenes.GameScene;
 // Q: Why does game run slower at lower framerates?
 // A: Engine.maxElapsed
 
-// TODO:
-// Save points, attaching things to platforms, interconnected levels,
-// save/load, music, sfx.
+// TODO: Save points, attaching things to platforms, save/load, music, sfx
 
 class Player extends ActiveEntity
 {

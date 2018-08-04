@@ -38,7 +38,6 @@ class GameScene extends Scene
         var castlePath = (
             Sys.getCwd().split("bin")[0] + "assets/levels/castle.txt"
         );
-        //sys.io.File.saveContent(castlePath, Serializer.run(castle));
         castle = Unserializer.run(sys.io.File.getContent(castlePath));
         currentScreenX = 12;
         currentScreenY = 4;
@@ -52,6 +51,7 @@ class GameScene extends Scene
 
         Key.define("quit", [Key.ESCAPE]);
         Key.define("build", [Key.B]);
+        Key.define("savecastle", [Key.S]);
         loadCurrentScreen();
     }
 
@@ -325,6 +325,7 @@ class GameScene extends Scene
     }
 
     private function buildMode() {
+        // Camera controls
         camera.scale += Mouse.mouseWheelDelta * 0.01;
         camera.scale = Math.max(camera.scale, 0.1);
         camera.scale = Math.min(camera.scale, 1);
@@ -336,6 +337,8 @@ class GameScene extends Scene
             cameraAnchor.subtract(cameraShift);
         }
         buildModeUI.setScale(1/camera.scale);
+
+        // Updating screen placer
         buildModeUI.screenPlacer.x = (
             Math.round(
                 (camera.x + Mouse.mouseX * (1/camera.scale) - GAME_WIDTH/2)
@@ -348,6 +351,8 @@ class GameScene extends Scene
                 / GAME_HEIGHT
             ) * GAME_HEIGHT
         );
+
+        // Placing screens
         if(Mouse.rightMousePressed && buildModeUI.screenPath != null) {
             var screenX = Std.int(buildModeUI.screenPlacer.x / GAME_WIDTH);
             var screenY = Std.int(buildModeUI.screenPlacer.y / GAME_HEIGHT);
@@ -358,6 +363,14 @@ class GameScene extends Scene
             }
             entitiesByScreen.remove(screenKey);
             loadScreen(screenX, screenY);
+        }
+
+        if(Input.pressed("savecastle")) {
+            var castlePath = (
+                Sys.getCwd().split("bin")[0] + "assets/levels/castle.txt"
+            );
+            sys.io.File.saveContent(castlePath, Serializer.run(castle));
+            buildModeUI.echo("CASTLE SAVED!");
         }
     }
 }

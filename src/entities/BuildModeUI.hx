@@ -8,14 +8,16 @@ import haxepunk.graphics.*;
 import haxepunk.graphics.text.*;
 import haxepunk.graphics.tile.*;
 import haxepunk.input.*;
+import haxepunk.Tween;
+import haxepunk.tweens.misc.*;
 import openfl.Assets;
 import scenes.GameScene;
 
 class BuildModeUI extends Entity
 {
-    private var onIndicator:Text;
     public var screenPlacer:Graphiclist;
     public var screenPath(default, null):String;
+    private var onIndicator:Text;
     private var fileRef:FileReference;
 
     public function new()
@@ -34,6 +36,16 @@ class BuildModeUI extends Entity
         ));
         addGraphic(screenPlacer);
         screenPath = null;
+    }
+
+    public function echo(message:String) {
+        onIndicator.text = message;
+        var resetTimer = new Alarm(1, TweenType.OneShot);
+        resetTimer.onComplete.bind(function() {
+            onIndicator.text = "BUILD MODE";
+        });
+        addTween(resetTimer);
+        resetTimer.start();
     }
 
     override public function update() {
