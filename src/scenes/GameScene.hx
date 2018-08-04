@@ -351,7 +351,12 @@ class GameScene extends Scene
         if(Mouse.rightMousePressed && buildModeUI.screenPath != null) {
             var screenX = Std.int(buildModeUI.screenPlacer.x / GAME_WIDTH);
             var screenY = Std.int(buildModeUI.screenPlacer.y / GAME_HEIGHT);
-            castle.set(getScreenKey(screenX, screenY), buildModeUI.screenPath);
+            var screenKey = getScreenKey(screenX, screenY);
+            castle.set(screenKey, buildModeUI.screenPath);
+            for(entity in entitiesByScreen[screenKey]) {
+                remove(entity);
+            }
+            entitiesByScreen.remove(screenKey);
             loadScreen(screenX, screenY);
         }
     }
