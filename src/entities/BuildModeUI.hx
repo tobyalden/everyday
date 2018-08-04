@@ -95,7 +95,6 @@ class BuildModeUI extends Entity
                         screenPath = path.split("levels/")[1];
                         loadScreenToPlace();
                     }
-                    // do something with file
                 }
                 else {
                     var directory = haxe.io.Path.addTrailingSlash(path);

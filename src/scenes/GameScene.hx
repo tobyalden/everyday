@@ -2,6 +2,8 @@ package scenes;
 
 import entities.*;
 import flash.system.System;
+import haxe.Serializer;
+import haxe.Unserializer;
 import haxepunk.*;
 import haxepunk.graphics.*;
 import haxepunk.graphics.text.*;
@@ -33,18 +35,11 @@ class GameScene extends Scene
     }
 
     public override function begin() {
-        castle = [
-	        "4, 4" => "lvl1/tempstart.oel",
-			"5, 4" => "lvl1/rundotexe.oel",
-			"6, 4" => "lvl1/distantshore2.oel",
-			"7, 4" => "lvl1/returnal.oel",
-			"8, 4" => "lvl1/departure.oel",
-			"9, 4" => "lvl1/hellothere.oel",
-			"10, 4" => "lvl1/arrival.oel",
-			"11, 4" => "lvl1/voyage.oel",
-			"12, 4" => "lvl1/graduate.oel",
-			"12, 3" => "lvlmisc/seeyoulater.oel", // NO MUSIC
-        ];
+        var castlePath = (
+            Sys.getCwd().split("bin")[0] + "assets/levels/castle.txt"
+        );
+        //sys.io.File.saveContent(castlePath, Serializer.run(castle));
+        castle = Unserializer.run(sys.io.File.getContent(castlePath));
         currentScreenX = 12;
         currentScreenY = 4;
         entitiesByScreen = new Map<String, Array<Entity>>();
