@@ -13,6 +13,8 @@ import haxepunk.tweens.misc.*;
 import openfl.Assets;
 import scenes.GameScene;
 
+// TODO: Select & move multiple segments, delete segments.
+
 class BuildModeUI extends Entity
 {
     public var screenPlacer:Graphiclist;

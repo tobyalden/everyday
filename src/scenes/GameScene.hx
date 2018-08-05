@@ -39,8 +39,8 @@ class GameScene extends Scene
             Sys.getCwd().split("bin")[0] + "assets/levels/castle.txt"
         );
         castle = Unserializer.run(sys.io.File.getContent(castlePath));
-        currentScreenX = 12;
-        currentScreenY = 4;
+        currentScreenX = 5;
+        currentScreenY = 12;
         entitiesByScreen = new Map<String, Array<Entity>>();
         player = null;
 
